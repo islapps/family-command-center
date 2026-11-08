@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A1325">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="McAfee Family">
+<title>McAfee Family</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A1325'/%3E%3Cpath d='M16 30 32 17l16 13v16a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2z' fill='none' stroke='%23F4B860' stroke-width='4.5' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='36' r='4' fill='%23F4B860'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAQAElEQVR4nOx9CZRexXXmV39rbUmtlYB2MEgoMbaAmG1sY5wxIscBOzNecmbsQI4TbJ85xz4MdjyTDJlknDPM2Dgz4ODBk5zZPJjExk7sYDhgTOKNzTGrWcRiGwktGKSW1K291V15//+q6i5V9f73txq6Ee8ezuP1+2u5Ve/e73731t/qaUted76BsYAxBtYW/0Pn3lrbvhb3aD9B51NjWvQ82d52nlN798SyNnF797zzg7VjHX1s0c6W47evsGM2TNh+3pb2qJ2+7SftXnaM2rsnlrXv9Anti7nG2i2r5lXty3F0eznvJOvJ5nXtOy3Teibm5dKCs4zOGsr32h7FXZ1lhJnQGbejWbCMUjPX3qj24O1NuULRvv1Tp5dbVrnyckfDStyHCFtRiun0LZuUuoXtcU9ke7AhO2/a0CPacYhp/JCGdrCjLVkGzVvqaY5CT3PUeiLSE3k9E/ujjINp1rGy8gkgdsSY8Gm5HqkZrd/yxTmTc5rBv17d3ttKsLyOIQQLK90AcqekhXn7Q+krYRwyYONtjtozy+btwSwbtONGeQL8/mo9CQkyepq8nrabnqa+nsjoCaFncPCEmONe9zYbLNZwy2UxhX1q/HvS7QmB4MczzkiovbePqJcNxtPRmya1DkXIEoWpW9aEnoT1A2FQK9vLLtn2ABl8Qit6yCMCrHrS+7zJ9mHepJ48iqn2XfU0opeXFscojhMhVoEhmAt8HjlEe4ZAQUuJpaUaGlF8JIa752/X+ZYPuChjk4plHuf8BOVig48aseMylhEomeCjxkf3sJks9tEj54uAiLB+LeARVs0LPm9ST0R6qnmTehLeSz2Dp5pIT+P1TFgGOmHFO3Ni353HCwSryyGQeE/ROL4viGHBbznZELhtiUjnMRwspjoCwy2SDSpjOQVqEcvRjXNYzjlYhO2NcygP4e/Fas6R1LMr57ApzkF6duccvouYqRaHYEhA6+fIEd5xsACEMf2VLCD4B5gNIfItYcEl3pgANSr2e8AJ7Sn2Ixf7/eaJ2K88x3WVnINpW8k5mJ5ZbiQ5CjJ62m7cyJhuenbhHOdTA8U5bE8cwn8qEJU6ABGD8RtAj61VTse8GdLI/ZvzsQ+sDfkKkBhNxPJoHEuxPNVezKKehFm0tpZjmM20T2gl563mKOYoOEdaWn5fUpwjIIHX2PODFIfw+xjnOISfCj9M2DXu984vk17iFxhhQHgefNqG2Jf0ae9JUR5hglYlX67iHCLmApxzWME5DJ9Xxn4+L/ib5hwlPDYZHGXjj58baenrX7Qa3qeTOAHCCRNwgvYFEm8SOQtrw0YzoLdKzS1/bgMwKeOWtisnYRwFwnbLea2f2XfwHEVMT1qR69CbY7GfjyNuhXKeG4XZu3COmKNAcw5nMKRuN27k/D/FUZCTFjR3K5kj6QeOz5pDyPmQzFmg+QpHbEgsIST33gOI+O3wlqp7CD7hgADVHCXhW84YJUdhvMT7NPkon4XGodsUznkmp+YNeKbm1bhYnxsJHK2uiwhuFIspyudIe3yeQ4RbEB5wnDCEMVbjR1gsPG7LaiP5gnBybt4RS0BYrt98hDhrVS89mrdyRglEVDZggTs5u+3OUXhdAKlZ1JOUtpZd9LzdVld/XiGtCNkYh8giFSAQD3xvTbBx5/30XGKPRwX4morlNk6xX/qHDfE14bv0hiQGMG7B7ZVxFCR8S+YdlDNzjuL6pjmKV82aFEfx26ZjP0cOwrOq+g2AGnURaDxT88ZCyMGeCQygvaQ2HhoC3ljRK6COekLj2+jW8vtcMEw4jmqfy24kR7HscRoDfLvgW3yuaBzLBkTs06bSg62N5gXzBD6v2AA5CNuGxLypPbGyfUJaiM66dM4CyTwQYhuIH4S1CdQJWGeEBt5JjeD2EDzfaq5gmfc4fxLxO4rHyktM7IsQGMC4Anl80EfMpcfpbAoER7E2zVFoBwy9wyRHsVUchcxMcZTMvDbNOWBFVqXFIYefyHEf3gCaiyC0CbwB9EOqr03wkt7E+6v3coNEZM1hAI9ukY0mwIhaJnyaRa5x1lH0OBU4V73GHue1KW6kEUtIi7gCz5pobp2zlOgCcc7ikTYAt+gbcFi8oTSaCVRkmGEYz+D+5HErYJjgKwhelakB2LCzxIeULzIMgKqj0Dj0hkLeEThQVOvk46R92udiEUcxGY5iMhwlhYtsXhNwMWccHqPCHIwQgr8hratEOf8809dwbzDg79i/LtCaQxvRi8WX0pJyNkpteE5uRF3f902eOyiGLuIpMVChA3kXeYj7noP0Lng0NX6y4Fc+IrvxtDf6aUql1BoRdimszinud8ZvM4v7gkUkjUOcVBmWs0T7G3wxABaveRBC0O74EQIflG/aSD4R34e4CKjcRGEGJGYk4jdYtFbx2Grflb4IxVGs8gfj4VnXRj3mRRzFIsFRDOMKZCV+vR7nwPyTrxEZjoJKjsJxMRaz5KS3dv5v3FskepBgDzYwjNDGd5B9EfEP0cYKLyReQk/A42vEMIzIZXK5BiDeqBwhzCKfszENeu1VkXfQPS2Pa04DWtZEz5LlKLG28Thy3oijJKRFqOVt31K8bEsGmcFeo+oLsUdsHPJyE8Ua9QSskkHnIMEnLEfXfD005vDCm1Mx0bVxK4p8l/Vi+jArjHQAQyCBAVE9ZrwcheoxLu5H45SYKuYlPMtzjr45C1e7Nw3CAKTww9DuIFEXkX0tAh4Yvl9K+ImDYVFZowUE1AhcYT9kmuvnUM9130z1DymOkozISY7CHqU4iuNh1ubHEetlHIXtYXhTUGdP3odpz11zUws5OhNRz/I5xw/iDTF+gPADDBscS2Jt6EpYQpbhtUeivcAMqqgyzPDvVkYTMkvvxx5v2Fz+h0zNIKwLld8b9QjhY7/lHAXVHCXsW6/1GM+ZUhxFrtGE/aFx8pYB4hzhTYdbEB4ACfxQzyX/CJ4RsZA8imixkoCEx6LGEMf40CYVU20U78PzRN9aPCD08k+CuhY5HcIs0Tioy1FwNLOk1piQVox4YMhT4hvhh/qeh8IP4h+CYYD5a0ARm8QG/pzOaIJPQ+YXMsYb8Kxb5jhyTFTwBivPU5DkAQFv3PsRtYfwzpJ5ipuLPMfW4yhGcZSgc/WZkc9xbIKjoJuTFpxjlSWccGhj3c6ECK2HoW9KxvzDO48RCZTfU/hP2T3ra1WbsGJmbWA8w2qtUjE7wQ/cOHV4A4/fRrmax3OKIOyTFLeIdUCSo+g90ePwPemFo9gUR8lJy1rOUNgZR8iOjPTy8A4CQnhfhAHhh2H+JNsE3sBQAew5wwCBPZZzdYEZYJhBPEPWReLvbPLnQI7D++yG2B+9upijKH0Q8CavAzhuaZ5kvcercdynqKzHpDiKSXKUjEjk8C+fbpE7dw1WEkA9momxkIiLWHX1n9rUpxFaCOeC9F1IzKD2wm/kc0B4COcNhvk6W1cvvsseSQzgahpU4BaYp1fP7nEOVs5iWHbjfFLtYUIYcrC5vceD5x1I4ofmH34cMP8Oo7lr4A2G4h+Lhfx56MUwSVR8VT2D/F5ghmX+SjkC4RkQ5w7wqADmhTSmayH4DXGaNEeJz0doHVC4pTkKkhyFAajXKMlRbMRRbHDcrPT1L1hVvmkQJ8jkHcZ/KoXqH1aOIxuR8QcsCbyEzRW1iXGCjz8+zIDCjIw/xbwhN6bhPpPmKM6bwbdVzxVhgJ+rK0ep0DkaJ9YtI+F3ZYUPOR8FrGZqsHn8MCxfQISoHDrKEZgPhbqFwhu2NoQYz/SMMQN1MMNp4huSr0NjUpI3pHGIenU5TwHnAWwuIzAgMVcFR5HjxBxFYDNMBFxJMYtPfAtQmXfE+GGRGtcA4lVKEECqvRVeIu4rpFy/jWCF9bIU0f24/AcrRwuTJ54bbuWQ1lNRTYl7kT7JXjbCgDAO158v2KL+7Exn1rw2chju8aYCP/ynoJX430wEYyHBG5ivMyzx93K1omINagM+o+GxNnAd5yUIPhfiLqK6SNg0m4zBlbUNj2GJeO/7lr0MTYN8LVVwFFZLTeUpkDwpwVF8r5TOah+6WQYC5yhV4PiR4h+semPCXisUIbRw20hcpNTYf5pRSI5F6CK5BUD5Ou8Q4hdSPENjQzSmHKYSwhjYpcaMsptIn7CubL4DK3mB91UonsQQ1/eKajm118Wl5eay+tyE8S8wThDw3MIzOMlCLNNb+AQUlvAroieJ9jofCf4RZrcaMxK1VKclxwZVVxB+XO4Os4DAeyp5Q5TdIMVRnM5G11L9ggJmpDAgw1GgOYpNchTUEY8cbuUaP/hz8QB0bpJnIb4tH4ZRTCs5inqiruWeQPqSFwuGZNWY0Zkqm+PwXKP32gbP7cNkAcl0rkS9yJfCAupjQIxPSOVlveUppbQEb0jgBxT/oN03gZ1E+MHHdLaf+A6H0bjiYi1fOUcLh8PcI5kPwSCql6CaZ1jvXOBYFeq/Itdg/petbdgU3ji/sqpeCdLH74OpwACtg+cfhvOkBEdRe8I4Sg3p61+4MqwlvFFbzT/8p+6xasPISGZSziRMsGVxH/MJPYAVvpLwM6R4BrpiBpRveXfR42cxI+rL16zjva2NAbYaA7p+hwNEYXpADgDpc9fkmQjicxPINjCcK3jPCwp774c1RtT56Z5OhkB92WjBv0GRSPoHCIgY0MRxNx7TuXxUL4EeH4IBRN/DYH3d/jhczGFYJQaQOWsMUL1shqN4+KJV15AOchCmMV83mfyFfZpkITbBRSzq4VhaWHiAUbeBYbAVG7Gb6MYzJM8H4xlgmIFkrgE+crZvjjek8SalSVfGIzhKZa+6lgHHOYTHO72Rww+xcudQdA6S4SL8iugemefsnnIWcJzwPmcpxgdfd/4K5HiG0e0ZM2DPASCXa5Tj+Cgcn+nwvuy51yrYB1K1VMdRIDEgeZ5SdQZkWa+6bKOUvtnubIW7dwo/HLogMXbZzV9CpKR6DvMG394a9YGNngcGoHECrOJiNVgJX09ihtRc+3f1GQrpFoYAKvhBGm9CJJUIlNAH9EasaCIwoFoHjxlynDrCzlY8UolZZX4BkNeK9XQ+YFBqOReh8cH83qr7CBuMvIdlEUT5scIMILT0YzKeAdcSSNZFwDrw53ou8N3Q/MCm+7p3Y+GxMGBG0EriDc1loGsVnG3o8xRE+oMssrYUyLESgTE4/ODO6K2E26xnIULkx7yn9HWFAczt9XPLvTlh8wk/9rpCsPpErK3iGYloncWMBNtwmFHR17C+zJsV3kQcpTpP0atI6d8jckwrLdqGfEFey7mJCRteVaQ28E/gn8t4xHzIRN/l8fl6ZA2yvax/hKEtiz5iHNXe74tc41h5v2B23+9duODU5TOLBhu3HvqLbw8OHwzJWdrCOGNg82KMPx+r6JuIDmK0gNay7kJtiudjY0jpYDnyjeU9pJuYRavP4z8CMMKFNX64OyMYQGZso8EhbsIsOXdPEpAp2Db9hQAAEABJREFUb/4CY6zwITmOa1S0P/vk2X9++dKlC6eHz7cNjvybv9j64M8O+vCTHIdegdCHGwEsmFnSYyTfFm9uI/3L2CHy4ngtKTUyetaQvtnzVwQvB2FXiRABGwT2G4EiCTzoNGQkkF0NXQmB8veetakrSpYA6U8CLagv2ySNjrCXXbDg+suXze/v45syb3bfe8+bv3N49NFNh+BHE/mC0fUJYhsU+03NvujSV2CG5w2CY/FegY3yikiveYo3jgUrUgjh15zAj9AmQTOyKOI6pS3GD5H5NDcY5yW6uY3QxzMMB7em1bLXXHrCx965uNVK6Fw8/OdvnLts0bS7frJ3bMzmFhHnGgm2IfmBTddSk+ynmqNAchSeE5EOiV61pW/W/BVG+XS5hhx+eD8wmoWEaw5Lgk8jMJjYGhiHMJRfGNTkIqWeUR1C++v8OeamK1ZeuH5u9e6ctmrWW9bNuePhvQdHxpD2e1nBVKsOCzZGcxQj+grvZzhUqsHn5e/YjUa8kCEQYSoY3vQmZtGqc8vd974LmWvwHyq5BbtlXMRFyi6IUk/8OCxmw+9VklvwgM9wZe2y6V/62Ipli6bXnLegIJdet/mpbYfAuKQfP0wlYj/jPQkeWquvpCMp3mBZ15ijuNG8DuNBjlbIngPgOmy0MIlzE3FFaQEUC2F5tcN6r+U11ppXG93zcch34eMFN+rQK9H+wvVzbvmD1fUto5Ci8S1/eNKG9XOZ3wO8DuG9H9xfUeX9UR3Wsr4UWXRtgyhKubo0v7FhRnju1btloH22Mn8llGen8MMycEG6FoLECElqgfjqWE7wG9GSx3jeLesNBuA1DPKtK9+15Op//UvTp7XQo0yfZt511kCrhXs27jfx+QVjDEw14fqsoWVqhr5mPLUNz58itkEzVvO2aumbNbCcGIar6QqqKThEKk9BxEXCazTp6kiSo4R7KA5hk/kLArdgb8BGM/p1zZnZuuHDSz9w/oJxhN7wPs47dc7rV86645Gh0VHFk6IY73ZMP2c7jJhtWP48ysXceq3kZ96qCKXkvklM7dE4ymzF8yMTb0k5H4IVi1qqAJPKiYy/Or3D8JX3DHxonNgPgq0wCgjisCsWT7v5kyvPOqUfRy2nLJ254fSBv//J8NCBsfCe+Fzh7SJEPa5bnfMX2dcqnBVYlT/vhT0KyHDSQqjESYYBPp9jEjxvtPAOLKO7j8Gd//lZwhslxk4cpcu9ifkEJBeJuQXPbs5bO/vW/3DiKSfMxATJuuWzbvujk89b2w+TP0MhzkQ7YwxjiJm+iPr6GBEoq+c3HG8Qsw3DOcr4pFMEAzNKlaGUErEQ9zjBRdgPODrVsmIFq9DcAhxdLr1gwZ//7rIipmBCZfaM1r88d8Hg8JFHnztggTpnKDFTCXyra1+Bl+m+EoeOmm2UUhjHcvhYbilSsntWk6CYJ6JMmovwK8VIyd7hf4B+7v1G3tuoEir4UMBwmD5jr7lsaa7GdfTSrpKtH1i+ePpdjw6PjXFLpfch9IR67uuhVvY1ib5ANCbH4LAnKd6Do5COcbSFfN0ESupRxM0g2VAYgsfFBJaEewhc4XbGkYY9t7K94hOClwi/BBbOaX3p4ys3nD4Pvcjnb33p/mf2n7N2Tv0up62afd66uXc+PHTgsMgXOiIsWD0Pq2CgJ7w82zeDN9U4ND4pspVlhr0hkzs38U8g0wmWu2ewBMncpM4VUS4jcYJqlIb739ql07/++6vXrZhVfxcOHBr76Bef///f2333k/se33xww/p5Re5as++KxTN+85wFP3h8eMfQEYV/pDNSz3PnL5BnIqov0n29gaUxbHziOYcQQ5cYP0TDHBchKzb573CkMabqapM4wae88I1zbrxi5aK501BbigLo+z+36UfPHih9+tkXDt/5yPA71s8rjt9qjlC0fP+bF23cevCnLxzqPODWDLVhbKWZ8xekcw3DWAVbtWUbENjGBFgGGHK4bMUwbDfdzl05nwihld1CnIMYiSsKY1DZBoJP2JDLGfDZr7xk8dUfOL6nGtePn93/3mue2zp4hPt0gQFfu2fP2Wv66xdSC6R599lFEaWoku2NMYNlIuCZFD2HzFwMcTJDeGMJM/iYcDnjhNQ2uPTNHlhesk7k6hw8wWaoAOIijDB5XQlRMrji7wkDcvcJETbRHq5/lrnhw8s+cP7CnijYV+7e/eEbNh84jNjXi5O2m+/ZtWzh9IJV1BytXSVbN/e01bNvf2j36FjkuqZGfaJbPRSpzCW0mZDaBheHHDEbCHNLFEEaS6K8RvGSGFfq36vRoitWLJl+8ydWnbWmhxrXkVF71U0vXPONF218ruvtvshBvv3I8M6hkbe9fl79lOeUpbMuOmP+XY8MDR8cc48oUwOraZb4ZyLGIM9f3ACaY0H0TeDNhIhHDpFTcMcvxeRyGYFyWV6ig43GFaMmkRw+F8A7cs6a2V/5xKqeDtJ27xu99PObb3twSNgij+VM80c2HbjvqX0bzhiYNaNutFoyMP19b170wE/3bdl5OIxjGGbw8d1t+8L9Ppnd5Poe7fc2ctJBDlScmwSJcxmPImS5qt4QeIkzvUTNI0KCXBuq97GYfdnbF17/e8v7e6lxFbTxfddseuL5g0ad48Sx3M+7defIN3+06+2nzVs0ry7PLSzpPectLKpkjzx3gPQPvsTsPnBtk/zuhesrMpS6fY9a2sbRuRHYAHL4zEwRF/EpDmUTYa+T9COFMY7JJ9vIcdrf4/rcpUWNa0lPNa47Hh7+7es27Rwe5WiRyn00Pxg+YL9y965Tl80sokbNuQrF3rF+/vLFM77z6B47pngG2Z/QwQQuWeqTb9O97wRI36x5S41jAwaVtU56O0bVOaxReUomx8lfoeNx7toZc35/66Z/u+rC9T3UuIqO//2Wl/7wxhdGjlBsZjgXRzHNDwqa8s37dxev/Ny1c+p752mr+9/6K/PueGj3gcNjvHYZ4oIVdZqwz5KpRNmNrIdGfSdI+maVFVKx2OD9jBtGjVT7RF4jCYasfGRy1PQVnBWtXTrzb/7d6lOX91rj2vLl7+9iLyXaR/fOWCqgfb09/T1P7n1s84GLTp9fv0q2vF0lW/T9x4d2DB+BtAxUMAbChgTbMNV9J0j6ZjrksLyeLaqQqTwlWRdRWCKvSNU9e66NXvjGuTdesap+7EenxvW+a5770bP7ZT4SxW+PfxCeSr5u/EsoKl13PDz0jvUDA/11q2RFy/e/ZclTWw/8dPtBk/L7wBhCF48ZgW3w3E22ifpOlBTZSodzGOn9Xkr8cPec25c2hErvITJi0xyl3r13CfOJdy+5+gMn9Fzj+mxR4xphNVauoYjfctUJfhAa7BweufmewbPXzC1QAfWkXSU7p12GuefJ4eD3sr6iMxSdQzlWEbXRfSdM+mYOLDXpcxPKV1GJIpqRsKXA8xiIeklv98W1f1brho+s+GDPNa5dl/+PzQdGrMqh4nxE+qisGaT5gSk4xNfuGVxaVMlW162vFL3+2bp5RZWsoCBHRqFwEbqqITIUYiplG4jzF/SyLfXFIUdEOZCaj3GR0MTpDSTsY2JkxeLpX/v9E88eX43LZiKxyEfAckLBMKSnal8fG8MdDw0VKPK203qqks3+9TMX3vXo7uEDo9bm8UBjhlQ/reAEi+Mc5FveiZTvCi6Sr4vEWJLkKPC2r9XxuXtoU6QGX/3kib3XuDbd+sCeiFtA4YHIZnn85vwJ6TaBuzzy8/33btx70Znze6qSFRTkgWf2bR08jGrM4DgHxodeZswopahzLOURRNckCByUkL8Z2uWYl1iOK4Z6gd+rccPzyy5Y9IXLV/Rc4/rsc0WNK1I2yS1UnYD4TXDVUp+IH4jhtxRVsvt3vf0NAz1Vyd775kWDQ6MP/3wf6cN2T+pfI7t5GaSoc5zArFVmm2kuQlUNpmsuu6mTmySuLWOv+Z3lH/+N43qrcT009NvXbtq594gj76Ybt4jrBB46WCpjE3kTSxjKR0MHxv76BzvXLZ/VW5Xs9AUrFs+48+Hdne+SGTW+5EYpPvTyxPEghXEsC+mBIQAGPzFxwrlIVqWIl/CrNjOI1+Hv5/f3/dWVJ/b0Pa5OjevFP7hxe8E2mCJWcQtItOjGMKDQQvAA14g+KKb+xv2DLWPOPXVuL1WyOee/fuD2B3cfPBTqtq/0GUpO2sgR1Scg6puG1zGTZyKCjGrsSXCUGGPofu3SGX/771/Xa43rI198/svf2xXhBLtHdAaEiFd5yWqo6xCJ8e9+cvixzfs3nDG/fsq9fPHMf3Huou89tmfH0AhVBfla4rrLhJ6h5KRdPmc/MoYRv2mOJdxwu2AJjSPvA8bQ/YWnz/3yFSf2XOP67M863+MSMGWi2Tm3KDGS01ShreYWifMXI+YSOFRUuu54aM+Fpy/opUo27bfeumTjlgPPbj8glYjG7+jzCiHHzIJz8J00qibBeEOMAVksieoliqOA3zvLuPLdx/2XDy7rtcb1ns/8bOuuIwmug+S5DOUsEf2j3IqjBcAwo6yfWs0PVC21+N/OoZGbf7jj7LVFlazu78sUC//Ncxe3q2RPDIWYKPMpjhkvu2XAI0eK10gCAsZFLGMVyPESq42iQop85IsfXfnBty3qrcb1w8HLv7CpqHFxPoEUq5DcApniQJyPmFR5wVsY2w3+aeh8cMR+9Yc7iyS8YBWoJ+0q2S8PvGF1/x0PDB4ZCzAna7WvCGaU0jdz7glRfQJRbqK4SCqvQXRWJ+slufsVS2Z8/VMnnb2mh18IODI6dtVN26752xctmO+aBE5YWdvQ3KK6PVV9wHWOkYnvFT83KXKQohi6Y+jIBW8Y6KFKtmz2RWcu+s7Du4f2jypMesUwo5R2WEGgDUQoUmIIQHzMLh8Qewi8JKqXMB7A7s9a03/zp05avqjuCUUhg3tHLrtu07ceGFKxKY8T+gcwzVlcS6YsAg9MhLF+eANRRxF1kUee23fvk8Mbzlw4u3aV7Lj509/75iX3Pz20fXCE1WBMBvNeLpF/462zUHcPurYlaBbybHh0tT5as75GjuCflzG7cwVOWDjt/378xIVzeqCfRY3rnZ/+6b1P7zNsZOf38ATO6WZNeEQJldRH6RzWFWoMIMwodS4xA2LtIppYz13YY3vf03sv+o+PPbPtQO2FYvG86Td98pePXzBdrOWVFYcc5W4wNkd4kOnIACQCCu6nyXyn/PSmK0866fgefr+5SAEuu/bnO4ZHNSjoKSs8LFHr9HYWMwxRI7GIGQBS1RGqRgSvK6SIEV/9wY4iRS+iBupJUUX91VPm3vTdF195zCilhZCtuVhL/sc8oGzkvd+1p6YuIoL8yTutiMEcV045YcaZJ9c9Sys6/rdvvvC712/ae9DK8cHxLOjTqQ2I7tArAq034v9WYEaJc4QrNC/NJTCJBSKKQsX9vkNjl137zJ99Y6ut/abPXjtwyrJZk2IZaBuHh2m+rjwAAA0nSURBVAaGtGHDrc+daJ0BSWgH+e57nu/v3RPnnWF/Yd9U+1/LKGpcH7p+05/93YvuPanxnQ6G6xNif6kps3v+5sSq2YTCzgyPPiEmuoHDXKKOIjHDjewZJa75+pbfufbp/YdGUU/OOmUuJkla4HtKUQCQXKTk4ZC7aQWWMBwGh2zOUeh+ab2D1m2Dhy/5z8/c+fAQYg5heZ7MsE3jhIlwQnELhB0I7YPlUS7jp/U6OEQBsx6+Ro4Zbng/5u0P7rr4009s23kINWTFkrphaMKlRWy8IxGLDFyP/M/5FuP5TqTvhmsK1W02J2Ly42f3XfjHTz+55aDw78TV6058Ir6C2Yq0bJmPgMfEwKyNeLthXsYwJGqSWtaQh1Bd5PHN+37tqp/849PD6C6TE1Mg/94KrZxieagfsL32H5rofYtcoBRRI+K5T7c13/bAnndf/ezufaNlXxtzAuQsDwn78GsR8VtwC5ePOIYBwZMkboHvmKxDAFpPwqEwZtlk1/DIxX/6+G0/HsRUlWlubWA2UbI5o1CRozSr9kheQt/hQOAonumLsN7dG57cwhI/y8Zh9a4UTqAKJ6xlSNm+X7F4enFIdu7auWuWzVrWKbcUgazIOe99au+3H9q9ZecIP8krNXH6aG+xDDOc0oS1pT4BlRlWFRDyzjctwpSUafLEBBXnrlE9MXe+Cj5O7loHLKtHkNaQ+lSdlrEVFZ8WhYQrLvmlS99+3IzpojZ16vLZxX8Xn7Xoj39rxf/7h5eu/bvtg3tHXXyEz8X0ebI1hjFirSGrs0kdukfWSZV2AcqCODnDD3413mF07FC8DzlUNxpjulMOC4lJiUhhddadiHEkjCMvWzjtpk+efOryqoypMJrLNxx//q/M+1efe2b7rhE4lpTkMSySltxFaGgYv2E8HVNdWqCqMENgzrCMzhLLniy8cmaa5YMy96kRWWT7hGXABjxDOOMIwrSl99fx+LXLZ91y1bpqywhy6or+b/3RujWdP8US6wMwFKRZAuAGnqH4DRBstwaCTpa0hK6GZ24sN0OEJfA8H75vFlGCD1mW+6B7tuL90iTHRMSCQbq1hZmkx8X2/6b3mc9cunLZ4h5Oc5YtnvmZS1dP64PkNNzmIOeC0bppzOB1kSkrLYFyvObDvuFSC0skrnQkYIz43kaoo9RQT9XdZY6TnJ3XYygHcRhTPP/IRcedc2pv/5BcIeetG/jorx9vRe5DOiTnKrOSHGZw38NUlQ4Xk6hLtR1/ZViCLJZQVUqvVo2GmA2kpVsvwZoRW7mw9c79wnl9H79kKcYlH7t4acFhNZvxDAOcYYjoDHFmCejayRSGjpZaJ9/f9kOPkKIilMMSI5Cfx/vYy2v5S2YclReICpWh+Ajpo8WHl7xpQf1/Bk7JQP+0i89awFRLeBSrBUP6j5H6eB9jxG0KSovyPdpxvvuOWwQOCGR5SRJX0hiDelxdxvLkmGxemNw3B7z1XHTGAhyFXPAG6s5qGAKfhKUCDDNUvZXVTqaqtNRuAm5tbeF4KH3CKlbF34TCFYDtFz+z6C4SDyJssIl5xTkIQLbb+aH+77Um5U0nzwFhBsu/FIcgH4jPXwJmmKnMNkppUX7IM9JSbYXkJnEymbQMhSscOMDvK8VCt2djmnSkkzjB4p2z/oHxxpRSisiSYBganwwEZiA6f7FRLXWKSstadibE9CbtfRofnMXhuUHESzi2y3gf6oPSkirEKMvjORTLTrnNcZwT8X4C30SwvNT5C3h9zxAvCd9RdZgxhXkGl3a24u3Dhnuw3A/cy22SFXIf5TycuKGJ77uJxiSTwgawWGNTnAnOy8v38eKeERyFFN0DhkFglaipeNxV5y/mVYQZpbSNI5wCQH2HQ1WjxY54EZmk0b4LQNagOMZUS4I3gFmn4fdGxHhnlyBt/Vt5/Pn9OAp5bPO+gBZI1DAsZxhMNVZLfZVgRikOOeSVnRhxRqJ4SSnSR8M1yjbjaxfNLLFRwRvQ5VoObMOVNDf4h0f34Cjku4/uidBL1DAUw8iev7xKpJXSWJ4ohjw2w0u4r7TFgNdObOzf7oouYkSvBAdCVK8jfQzDv6C//cZ9g3v2H8G4ZMeew1+/+yXBb6iGAa4DU9w1fQV+r/XlkFbyDEyhCMcSQGKJtfS9CuIoHj9tJcZUixW92DgIHMLFHfXdDubZ0ndNYRnX37Id45Lrbtk2fGiM8EzqZtlZSdzmVYcZpbSISyL55twrinmJ8A+BK0igi2JwNHKVJFAhMT6fF6weY5Px/obbX7hn4xB6lPs2Dv3v7/wiixayzuH97VWJFlxaHHVZ9aYCS/S7gWRemqOk+EqJ/N10E+0FVkVXIPgr0t/t8BZ/ZNRefv0zW3bU+nJvKVt3HvrQ558+cmRMMwyk6hz6O6SvYmlZvvvW6ipNjIrulnPvLt/E4ffwvl5j75K8AUn7AFh+FOUFai07h0Yv/vTjT22plbls3LLvN/7TYzuHRui8l41pbYQZr36bCNLJVrJnJYFPsVjjHZ77Rz6agPGVshdFom7C+I0epwIbEjHeMLMq1/XC7pF3/ekTf3nH9sMjY7npi4/+8vZtF//JY9sHDwOcW0D5w6uxhlFHprFajfwtdfpWabmx/HuR4XugssbQFrc7/szFML4i+9YSy78N6r+nWcaaqu+Hqt/lj/Cm/XzP/tGrbtz0P2//xYYz5p+3bmDNstnlv6VRBJFntu2/b+PwbT8e3LZrBB5N5fdnOYa5TBvHlmWgbRyhzgjBGdV3OGyoXxmPn4GdOAwX75uzzti/63uYYLIcGxR6B02sqJ3HcU2dMj6/4+D/urP47xdu4FTuRtULzi1S8fcYk5blDMuG/FCfbEW8RJwdVHyHQ7AzK329q9gsb1D3pAPXTXBhmVNAnsWAzCeuW4CsClE+cgzaRJBW2BfCRgN9lsF2FvFZq5EcReKK2EeOvd0jC29vBW+IsYHu4UmhUTghc4qyiaywMVvRtRPuCebYyUeqpeX9Q1YkAXklTAYkoigfTeBKqKOIKniNyMLbG4EHVp6OGoo+VIvLf7eDYkcY30CgBTtrtfH5SB3MOyakVfEdDggsSfISRBld4jsc1mbO3iolbi/HTHAIozgKlCVJ5ihiCkT0RMwtUNumjx1pOb/k8RV0Gq5QV/IS2qnsdziM5Cvg/t1FovY2fn+SQ5gA9oJPyBBIb1fZelSbga51drXnY01aPk8T7wAUuZlN8PMC74uwzEfL5mB8JeXTpl49wBuh6qvRi3EIghSrogYUn3CKxjiRrKOEjcBrTFqwyXPX6B0IFzLcF1MchSICe2UQsb+bVPUVGKY5hLuCRYRsNOTji3pr8gzhtSYt5iWc8Wn0ruIl8VV+b8MK/hhOQLoItRQ8VIysLUNfS2O24owGsPr7FuA4cQzXLXqVVnjhvLqVwhLFS+jaFsPv+ZvLvEUytEpJjxPuAfodsprf7TCWZb8iB3nN40Qs9K8P6GoS1ZQEloRaMhgDgK8hlgMl+Ery2kUScSo5PuNJRtcnoPiErT6zbYRL8p9NteFMJMYS2Ox3OKr4ClJ4003qjCPmtbbOdzsaPlFTcv+mrvYq6W0A3/1wTeechl8Rn5nlRdbcTDqbNQzPElU40/CJcUsPf6KAYrOL09IyojqBjvHSv+tRDoEHomAh5wKzDMizj4ZPjFt6Mg7heXmOgug7p+A+HXy9u5hU35BfJGsSgkM0fOKopDfjyEjId0zIRBLfOdXcpRZ0JPoaNlc5e4MNL4/08I/Sd5UMruSu3aCjxjgio2lkomUijaO+FH6/71CX3x/5tfUL8RqQrsscPlD3H8KecJkc4yj8/qVuv7b6q6fMK/7Da15eGjqMSZLJMY5Cnth8VL+2+tqRx57bh0mSCSGk45HHN+97ac+k+cSrRXYMjTy1tYc/4TOxMmnGUciN3/0FGqmU/3PnOH95c0JkMo3jC9/aumffOH+t+bUgQ/uPfOHWrZg8mUzjGNo/evXNm9BIRv7kyz/ff2gMkyeTaRxow+YL33l46v5NiUmUW/9x543ffRGTKn3T+xdjUuXOh3advXbeiiU9/PH6Y17u3bjn8s9vPHxkkot7k28ch47Yv/r+iycsmrH+pEn7Y2ZTSr501/YPXffUpFtGIaZ/8RpMDXnjiXM+9Z5VG86con+Z5hWQbz84+F+/tvmxTZNW2FAyhYyjlCUD0951zpLF82r9ecBjRnYOj3zzvh07h6dW7jbljKORqSOTnK00MpWlMY5GstIYRyNZaYyjkaw0xtFIVhrjaCQrjXE0kpXGOBrJSmMcjWSlMY5GstIYRyNZaYyjkaw0xtFIVhrjaCQrjXE0kpXGOBrJSmMcjWSlMY5GstIYRyNZaYyjkaw0xtFIVhrjaCQrjXE0kpXGOBrJSmMcjWSlMY5GstIYRyNZaYyjkaw0xtFIVhrjaCQrjXE0kpXGOBrJSmMcjWSlMY5GstIYRyNZaYyjkaw0xtFIVhrjaCQrjXE0kpV/AgAA//9DCfj5AAAABklEQVQDABAqgsffFFIdAAAAAElFTkSuQmCC">
+<style>
+:root{
+  --bg:#0A1325;
+  --bg-2:#0D1830;
+  --card:#111D36;
+  --card-2:#182744;
+  --card-3:#21335A;
+  --line:rgba(148,170,214,.12);
+  --line-2:rgba(148,170,214,.22);
+  --text:#EEF2FA;
+  --muted:#98A6C3;
+  --faint:#6B7A99;
+  --cloud:#C4CEE2;
+  --accent:#F4B860;
+  --accent-ink:#241806;
+  --accent-soft:rgba(244,184,96,.12);
+  --rob:#6FA8FF;
+  --hannah:#F190B7;
+  --kai:#5CD3A3;
+  --knox:#B49CFF;
+  --family:var(--accent);
+  --r:22px;
+  --r-sm:14px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--text);
+  font:17px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  -webkit-tap-highlight-color:transparent;min-height:100vh;overflow-x:hidden;
+}
+button,input,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{background:none;border:0;cursor:pointer;touch-action:manipulation}
+button:disabled{cursor:default}
+svg{display:block}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tnum{font-variant-numeric:tabular-nums}
+
+.app{max-width:440px;margin:0 auto;padding-bottom:calc(40px + var(--safe-b));position:relative}
+.app::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:340px;pointer-events:none;z-index:-1;
+  background:radial-gradient(110% 70% at 15% -10%,rgba(244,184,96,.10),transparent 60%),
+             radial-gradient(90% 60% at 100% 0%,rgba(111,168,255,.08),transparent 60%);
+}
+
+/* ---------- Header ---------- */
+.top{padding:calc(var(--safe-t) + 30px) 20px 18px}
+.eyebrow{font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.01em}
+h1{font-size:36px;line-height:1.1;font-weight:750;letter-spacing:-.025em;margin-top:4px}
+.greet{color:var(--muted);font-size:17px;margin-top:6px}
+.upnext{
+  margin-top:18px;width:100%;display:flex;align-items:center;gap:14px;text-align:left;
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 14px 14px 16px;
+  transition:transform .15s var(--ease),background .15s;
+}
+.upnext:active{transform:scale(.985);background:var(--card-2)}
+.un-bar{width:4px;align-self:stretch;border-radius:4px;flex:none}
+.un-body{flex:1;min-width:0}
+.un-label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.un-title{display:block;font-size:19px;font-weight:650;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.un-meta{display:block;font-size:15px;color:var(--muted);margin-top:1px}
+.un-go{color:var(--faint);width:22px;height:22px;flex:none}
+
+/* ---------- Sticky shortcut bar ---------- */
+.jump{
+  position:sticky;top:0;z-index:30;padding:calc(var(--safe-t) + 10px) 0 10px;
+  background:rgba(10,19,37,.84);-webkit-backdrop-filter:saturate(160%) blur(18px);backdrop-filter:saturate(160%) blur(18px);
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+.jump.stuck{border-bottom-color:var(--line)}
+.jump-track{display:flex;gap:8px;overflow-x:auto;padding:0 16px;scroll-padding:0 16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.jump-track::-webkit-scrollbar{display:none}
+.chip{
+  flex:none;height:44px;padding:0 18px;border-radius:999px;display:inline-flex;align-items:center;
+  font-size:16px;font-weight:600;color:var(--muted);text-decoration:none;background:var(--card);
+  border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s;white-space:nowrap;
+}
+.chip.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* ---------- Sections ---------- */
+.section{padding:34px 16px 0;scroll-margin-top:calc(var(--safe-t) + 70px)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 4px 12px;min-height:44px}
+h2{font-size:25px;line-height:1.15;font-weight:750;letter-spacing:-.02em}
+.sec-sub{color:var(--muted);font-size:15px;margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.card + .card{margin-top:12px}
+.empty{color:var(--muted);font-size:16px;padding:18px 16px}
+
+.text-btn{
+  min-height:44px;padding:0 12px;border-radius:12px;color:var(--accent);font-weight:650;font-size:16px;
+  transition:background .15s,opacity .15s;
+}
+.text-btn:active{background:var(--accent-soft)}
+.text-btn:disabled{color:var(--faint);opacity:.7}
+.text-btn.quiet{color:var(--muted)}
+.solid-btn{
+  min-height:48px;padding:0 20px;border-radius:14px;background:var(--accent);color:var(--accent-ink);
+  font-weight:700;font-size:16px;transition:transform .12s var(--ease),filter .15s;
+}
+.solid-btn:active{transform:scale(.97);filter:brightness(.95)}
+.icon-btn{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--text);
+  background:var(--card-2);transition:background .15s;
+}
+.icon-btn:active{background:var(--card-3)}
+.icon-btn svg{width:22px;height:22px}
+.input{
+  width:100%;min-height:52px;border-radius:var(--r-sm);background:var(--bg-2);border:1px solid var(--line-2);
+  padding:0 16px;font-size:17px;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none;
+}
+.input::placeholder{color:var(--faint)}
+.input:focus{border-color:var(--accent);background:#0B162C}
+
+/* ---------- Calendar ---------- */
+.cal{padding:14px 12px 12px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px}
+.cal-title{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.cal-nav{display:flex;align-items:center;gap:8px}
+.cal-nav .text-btn{font-size:15px}
+.dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:13px;font-weight:700;color:var(--faint);letter-spacing:.06em;padding-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.day{
+  height:54px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font-size:17px;font-weight:550;font-variant-numeric:tabular-nums;color:var(--text);transition:background .15s;
+}
+.day:not(.blank):active{background:var(--card-2)}
+.day.past{color:var(--faint)}
+.day.today{color:var(--accent);font-weight:750;box-shadow:inset 0 0 0 1.5px rgba(244,184,96,.55)}
+.day.selected{background:var(--accent)!important;color:var(--accent-ink);font-weight:750;box-shadow:none}
+.dots{display:flex;gap:3px;height:6px}
+.dots i{width:6px;height:6px;border-radius:50%;display:block}
+.day.selected .dots i{background:var(--accent-ink)!important;opacity:.55}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;padding:14px 4px 4px;margin-top:8px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:50%;display:block}
+
+.dd{padding:16px 16px 4px}
+.dd-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:4px}
+.dd-title{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.dd-sub{color:var(--muted);font-size:15px}
+.badge{font-size:14px;font-weight:650;color:var(--muted);background:var(--card-2);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.dd .empty{padding:10px 0 16px}
+
+/* Event row (shared) */
+.event{display:flex;gap:12px;padding:12px 0;align-items:stretch}
+.event + .event{border-top:1px solid var(--line)}
+.ev-time{width:60px;flex:none;text-align:right;font-variant-numeric:tabular-nums;line-height:1.2;padding-top:1px}
+.ev-time b{display:block;font-size:17px;font-weight:650}
+.ev-time small{display:block;font-size:13px;color:var(--muted);font-weight:550;margin-top:1px}
+.ev-time .allday{font-size:14px;font-weight:650;color:var(--muted);line-height:1.25}
+.ev-bar{width:4px;border-radius:4px;flex:none}
+.ev-body{min-width:0;flex:1}
+.ev-title{font-size:17px;font-weight:620;line-height:1.3}
+.ev-meta{font-size:15px;color:var(--muted);margin-top:2px}
+
+/* ---------- Week Ahead ---------- */
+.wk-day{padding:14px 16px 6px}
+.wk-day + .wk-day{border-top:1px solid var(--line)}
+.wk-label{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:2px}
+.wk-label b{font-size:16px;font-weight:750;letter-spacing:.01em}
+.wk-label span{font-size:15px;color:var(--muted)}
+.wk-day.is-today .wk-label b{color:var(--accent)}
+.wk-empty{color:var(--faint);font-size:16px;padding:8px 0 12px 88px}
+
+/* ---------- Weather ---------- */
+.wx{padding:20px 18px 6px}
+.wx-loc{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--muted)}
+.wx-loc svg{width:16px;height:16px}
+.wx-now{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
+.wx-temp{font-size:76px;font-weight:250;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin-left:-3px}
+.wx-cond{font-size:20px;font-weight:650;margin-top:8px}
+.wx-hl{font-size:16px;color:var(--muted);margin-top:2px}
+.wx-big{width:96px;height:96px;flex:none;margin-right:2px}
+.wx-big svg{width:100%;height:100%}
+.wx-stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--card-2);border-radius:16px;margin:18px 0 8px;padding:12px 4px}
+.wx-stats div{text-align:center}
+.wx-stats div + div{border-left:1px solid var(--line)}
+.wx-stats small{display:block;font-size:13px;color:var(--muted);font-weight:600}
+.wx-stats b{display:block;font-size:17px;font-weight:650;margin-top:2px}
+.wx-row{display:grid;grid-template-columns:60px 40px 34px 1fr 34px;align-items:center;gap:10px;min-height:58px}
+.wx-row + .wx-row{border-top:1px solid var(--line)}
+.wx-day{font-size:17px;font-weight:650}
+.wx-ic{display:flex;flex-direction:column;align-items:center}
+.wx-ic svg{width:28px;height:28px}
+.wx-ic small{font-size:12px;font-weight:700;color:var(--rob);margin-top:1px;line-height:1}
+.wx-lo{text-align:right;color:var(--muted);font-size:17px;font-variant-numeric:tabular-nums}
+.wx-hi{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums}
+.range{position:relative;height:6px;border-radius:6px;background:var(--card-2)}
+.range span{position:absolute;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,rgba(244,184,96,.45),var(--accent))}
+.range i{position:absolute;top:50%;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--card)}
+.wx-foot{font-size:13px;color:var(--faint);text-align:center;padding:10px 0 12px}
+
+/* ---------- Lists (shopping + notes) ---------- */
+.add{display:flex;gap:10px;padding:12px}
+.add-btn{width:52px;height:52px;flex:none;border-radius:var(--r-sm);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;transition:transform .12s var(--ease)}
+.add-btn:active{transform:scale(.94)}
+.add-btn svg{width:24px;height:24px}
+.check{
+  width:28px;height:28px;border-radius:50%;border:2px solid var(--faint);flex:none;display:grid;place-items:center;
+  color:transparent;transition:background .18s,border-color .18s,color .18s,transform .18s var(--ease);
+}
+.check svg{width:16px;height:16px}
+.done .check{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.item{
+  display:flex;align-items:center;gap:14px;width:100%;min-height:58px;padding:10px 16px;text-align:left;
+  border-top:1px solid var(--line);transition:background .15s;
+}
+.item:active{background:var(--card-2)}
+.item-text{flex:1;min-width:0}
+.item-name{display:block;font-size:17px;font-weight:550;transition:color .18s}
+.item-note{display:block;font-size:14px;color:var(--muted);margin-top:1px}
+.item.done .item-name{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--faint)}
+.item.done .item-note{color:var(--faint)}
+.list-foot{display:flex;justify-content:space-between;align-items:center;padding:6px 6px 6px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:15px;min-height:56px}
+.pop{animation:pop .28s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* ---------- Meals ---------- */
+.meal{
+  display:flex;align-items:center;gap:14px;width:100%;min-height:62px;padding:10px 12px 10px 16px;text-align:left;
+  transition:background .15s;position:relative;
+}
+.meal + .meal{border-top:1px solid var(--line)}
+button.meal:active{background:var(--card-2)}
+.meal-day{width:44px;flex:none;line-height:1.15}
+.meal-day b{display:block;font-size:14px;font-weight:750;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.meal-day span{display:block;font-size:20px;font-weight:650;font-variant-numeric:tabular-nums}
+.meal-name{flex:1;min-width:0;font-size:17px;font-weight:550}
+.meal-name.empty{color:var(--faint);font-weight:500;padding:0}
+.meal-pen{width:40px;height:40px;flex:none;display:grid;place-items:center;color:var(--faint)}
+.meal-pen svg{width:18px;height:18px}
+.meal.today{background:rgba(244,184,96,.06);box-shadow:inset 3px 0 0 var(--accent)}
+.meal.today .meal-day b,.meal.today .meal-day span{color:var(--accent)}
+.tonight{display:inline-block;font-size:12px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.meal.editing{align-items:flex-start;background:var(--card-2)}
+.meal.editing .meal-day{padding-top:13px}
+.meal-edit{flex:1;min-width:0;padding:4px 4px 2px 0}
+.edit-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+
+/* ---------- Notes ---------- */
+.composer{padding:12px;display:flex;flex-direction:column;gap:10px}
+.ta{min-height:84px;padding:14px 16px;resize:none;line-height:1.4;display:block}
+.composer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.seg{display:flex;background:var(--bg-2);border:1px solid var(--line-2);border-radius:14px;padding:3px;gap:2px}
+.seg-label{font-size:14px;color:var(--muted);font-weight:600;margin-right:2px}
+.seg-btn{min-height:42px;padding:0 14px;border-radius:11px;font-size:16px;font-weight:620;color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:background .15s,color .15s}
+.seg-btn i{width:8px;height:8px;border-radius:50%;display:block}
+.seg-btn[aria-checked="true"]{background:var(--card-3);color:var(--text)}
+.note{display:flex;align-items:flex-start;gap:4px;padding:8px 4px 8px 6px;border-top:1px solid var(--line)}
+.note-check{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%}
+.note-body{flex:1;min-width:0;padding:12px 0 6px}
+.note-text{font-size:17px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;transition:color .18s}
+.note.done .note-text{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--faint)}
+.note-meta{display:flex;align-items:center;gap:7px;font-size:14px;color:var(--muted);margin-top:5px}
+.note-meta i{width:8px;height:8px;border-radius:50%;display:block}
+.note-del{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%;color:var(--faint);transition:color .15s,background .15s}
+.note-del:active{background:rgba(255,120,120,.12);color:#FF8A8A}
+.note-del svg{width:20px;height:20px}
+
+/* ---------- Footer + toast ---------- */
+.foot{text-align:center;color:var(--faint);font-size:14px;padding:36px 24px 0;line-height:1.5}
+.toast{
+  position:fixed;left:50%;bottom:calc(16px + var(--safe-b));z-index:50;width:calc(100% - 32px);max-width:408px;
+  transform:translate(-50%,calc(100% + 40px));opacity:0;transition:transform .32s var(--ease),opacity .2s;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:#22345A;border:1px solid var(--line-2);border-radius:18px;padding:6px 6px 6px 18px;
+  box-shadow:0 16px 40px rgba(0,0,0,.45);font-size:16px;font-weight:550;
+}
+.toast.show{transform:translate(-50%,0);opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <p class="eyebrow" id="dateLabel"></p>
+    <h1>McAfee Family</h1>
+    <p class="greet" id="greet"></p>
+    <button class="upnext" id="upNext" type="button"></button>
+  </header>
+
+  <nav class="jump" id="jump" aria-label="Jump to section">
+    <div class="jump-track" id="jumpTrack">
+      <a class="chip active" href="#calendar" data-target="calendar">Calendar</a>
+      <a class="chip" href="#week" data-target="week">Week Ahead</a>
+      <a class="chip" href="#weather" data-target="weather">Weather</a>
+      <a class="chip" href="#shopping" data-target="shopping">Shopping</a>
+      <a class="chip" href="#meals" data-target="meals">Meals</a>
+      <a class="chip" href="#notes" data-target="notes">Notes</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Calendar -->
+    <section class="section" id="calendar" aria-labelledby="h-cal">
+      <div class="sec-head"><h2 id="h-cal">Calendar</h2></div>
+      <div class="card cal">
+        <div class="cal-head">
+          <div class="cal-title" id="calTitle"></div>
+          <div class="cal-nav">
+            <button class="text-btn" id="calToday" type="button" hidden>Today</button>
+            <button class="icon-btn" id="calPrev" type="button" aria-label="Previous month"></button>
+            <button class="icon-btn" id="calNext" type="button" aria-label="Next month"></button>
+          </div>
+        </div>
+        <div class="dow" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="grid" id="calGrid"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="card dd" id="dayDetail" aria-live="polite"></div>
+    </section>
+
+    <!-- Week Ahead -->
+    <section class="section" id="week" aria-labelledby="h-week">
+      <div class="sec-head"><div><h2 id="h-week">Week Ahead</h2><p class="sec-sub" id="weekSub"></p></div></div>
+      <div class="card" id="weekList"></div>
+    </section>
+
+    <!-- Weather -->
+    <section class="section" id="weather" aria-labelledby="h-wx">
+      <div class="sec-head"><h2 id="h-wx">Weather</h2></div>
+      <div class="card wx" id="wx"></div>
+    </section>
+
+    <!-- Shopping -->
+    <section class="section" id="shopping" aria-labelledby="h-shop">
+      <div class="sec-head"><div><h2 id="h-shop">Shopping List</h2><p class="sec-sub" id="shopSub"></p></div></div>
+      <div class="card">
+        <form class="add" id="shopForm" autocomplete="off">
+          <input class="input" id="shopInput" type="text" placeholder="Add an item…" aria-label="New shopping item" enterkeyhint="done" maxlength="60">
+          <button class="add-btn" type="submit" aria-label="Add item" id="shopAdd"></button>
+        </form>
+        <div id="shopList"></div>
+        <div class="list-foot">
+          <span id="shopStatus"></span>
+          <button class="text-btn" id="clearChecked" type="button">Clear checked</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meal Plan -->
+    <section class="section" id="meals" aria-labelledby="h-meals">
+      <div class="sec-head">
+        <div><h2 id="h-meals">Meal Plan</h2><p class="sec-sub" id="mealSub"></p></div>
+        <button class="text-btn" id="clearWeek" type="button">Clear week</button>
+      </div>
+      <div class="card" id="mealList"></div>
+    </section>
+
+    <!-- Notes -->
+    <section class="section" id="notes" aria-labelledby="h-notes">
+      <div class="sec-head"><div><h2 id="h-notes">Notes</h2><p class="sec-sub" id="noteSub"></p></div></div>
+      <div class="card">
+        <form class="composer" id="noteForm" autocomplete="off">
+          <textarea class="input ta" id="noteInput" rows="2" placeholder="Leave a note for the family…" aria-label="New note" maxlength="280"></textarea>
+          <div class="composer-row">
+            <div class="seg" role="radiogroup" aria-label="Note from" id="authorSeg">
+              <button type="button" class="seg-btn" role="radio" aria-checked="true" data-by="rob"><i style="background:var(--rob)"></i>Rob</button>
+              <button type="button" class="seg-btn" role="radio" aria-checked="false" data-by="hannah"><i style="background:var(--hannah)"></i>Hannah</button>
+            </div>
+            <button class="solid-btn" type="submit">Add note</button>
+          </div>
+        </form>
+        <div id="noteList"></div>
+      </div>
+    </section>
+  </main>
+
+  <p class="foot">Design preview with sample data.<br>Changes reset when you refresh.</p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastMsg"></span>
+  <button class="text-btn" id="toastUndo" type="button">Undo</button>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------- Helpers ---------- */
+  const $ = (s, r = document) => r.querySelector(s);
+  const pad = n => String(n).padStart(2, '0');
+  const keyOf = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  const dayStart = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const sameDay = (a, b) => keyOf(a) === keyOf(b);
+  const fmt = (d, o) => d.toLocaleDateString('en-US', o);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let uid = 0; const nextId = () => ++uid;
+
+  const NOW = new Date();
+  const TODAY = dayStart(NOW);
+  const MIN = 60000;
+
+  const svg = (d, sw = 2) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+  const ICON = {
+    left: svg('<path d="M14.5 6l-6 6 6 6"/>', 2.4),
+    right: svg('<path d="M9.5 6l6 6-6 6"/>', 2.4),
+    plus: svg('<path d="M12 5v14M5 12h14"/>', 2.6),
+    check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 3.2),
+    trash: svg('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>'),
+    pencil: svg('<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>'),
+    pin: svg('<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
+  };
+
+  const PEOPLE = {
+    family: { name: 'Family', color: 'var(--family)' },
+    rob:    { name: 'Rob',    color: 'var(--rob)' },
+    hannah: { name: 'Hannah', color: 'var(--hannah)' },
+    kai:    { name: 'Kai',    color: 'var(--kai)' },
+    knox:   { name: 'Knox',   color: 'var(--knox)' },
+  };
+  const ORDER = Object.keys(PEOPLE);
+
+  /* ---------- Sample events (built relative to today so it always looks current) ---------- */
+  function daysUntil(dow, min) { for (let i = min; i < min + 7; i++) if (addDays(TODAY, i).getDay() === dow) return i; return min; }
+  const checkupOff = daysUntil(2, 1);   // next Tuesday
+  const dateNightOff = daysUntil(5, 0); // this Friday (or today, if it's Friday)
+
+  const WEEKLY = [
+    { dow: 0, start: '10:30', title: 'Church', who: ['family'], where: 'Grace Fellowship' },
+    { dow: 1, start: '08:30', title: 'Sales team huddle', who: ['rob'], where: 'Zoom', work: true },
+    { dow: 2, start: '17:30', title: 'Soccer practice', who: ['kai'], where: 'Corinth Community Park' },
+    { dow: 4, start: '10:00', title: 'Team check-in', who: ['hannah'], where: 'Video call', work: true },
+    { dow: 6, start: '09:00', title: 'Soccer game', who: ['kai'], where: 'Field 3 · Community Park' },
+  ];
+  const ONE_OFF = [
+    { off: -11, start: '09:00', title: 'Daycare tour', who: ['knox'], where: 'Little Oaks Academy' },
+    { off: -8,  start: '16:30', title: 'Family photos', who: ['family'], where: 'Lewisville Lake Park' },
+    { off: -5,  start: '11:30', title: 'Team lunch', who: ['rob'], where: 'Office' },
+    { off: -2,  start: '18:00', title: 'Dinner with the Parkers', who: ['family'], where: 'Their place' },
+    { off: 0,   start: '16:00', title: 'Grocery pickup', who: ['hannah'], where: 'Target' },
+    { off: 1,   allDay: true,   title: 'Picture day', who: ['kai'], where: 'Blue sweater' },
+    { off: 2,   start: '12:00', title: 'Client lunch: Ramirez review', who: ['rob'], where: 'Downtown Denton', work: true },
+    { off: checkupOff, start: '09:15', title: '6-month checkup', who: ['knox'], where: 'Dr. Patel · Corinth Pediatrics' },
+    { off: 4,   start: '09:30', title: 'Coffee with Jess', who: ['hannah'], where: 'Main Street' },
+    { off: 5,   start: '15:00', title: 'Agency pipeline review', who: ['rob'], where: 'Office', work: true },
+    { off: dateNightOff, start: '19:00', title: 'Date night', who: ['rob', 'hannah'], where: 'Grandma has the boys' },
+    { off: 6,   start: '14:00', title: "Eli's birthday party", who: ['kai'], where: 'Trampoline park' },
+    { off: 9,   start: '13:00', title: 'Haircut', who: ['hannah'], where: 'Salon on Main' },
+    { off: 12,  allDay: true,   title: 'Sales conference', who: ['rob'], where: 'Nashville', work: true },
+    { off: 13,  allDay: true,   title: 'Sales conference', who: ['rob'], where: 'Nashville', work: true },
+    { off: 16,  start: '10:00', title: 'Flu shots', who: ['kai', 'knox'], where: 'Corinth Pediatrics' },
+    { off: 19,  start: '18:30', title: 'Parent–teacher conference', who: ['kai'], where: 'Rob & Hannah' },
+  ];
+  const ONE_OFF_BY_DAY = {};
+  ONE_OFF.forEach(e => { const k = keyOf(addDays(TODAY, e.off)); (ONE_OFF_BY_DAY[k] = ONE_OFF_BY_DAY[k] || []).push(e); });
+
+  function holiday(d) {
+    const m = d.getMonth(), n = d.getDate();
+    if (m === 10 && d.getDay() === 4 && n >= 22 && n <= 28) return { start: '14:00', title: 'Thanksgiving dinner', who: ['family'], where: 'Our house · 12 guests' };
+    if (m === 11 && n === 25) return { allDay: true, title: 'Christmas Day', who: ['family'], where: 'Home' };
+    return null;
+  }
+
+  function eventsOn(d) {
+    const hol = holiday(d), list = [];
+    if (hol) list.push(hol);
+    WEEKLY.forEach(e => { if (e.dow === d.getDay() && !(hol && e.work)) list.push(e); });
+    (ONE_OFF_BY_DAY[keyOf(d)] || []).forEach(e => { if (!(hol && e.work)) list.push(e); });
+    return list.sort((a, b) => (a.allDay === b.allDay) ? (a.allDay ? 0 : a.start.localeCompare(b.start)) : (a.allDay ? -1 : 1));
+  }
+
+  function timeParts(hm) {
+    const p = hm.split(':').map(Number), ap = p[0] >= 12 ? 'PM' : 'AM';
+    return { t: (p[0] % 12 || 12) + ':' + pad(p[1]), ap };
+  }
+  const timeText = e => e.allDay ? 'All day' : (t => t.t + ' ' + t.ap)(timeParts(e.start));
+  function whoColor(who) {
+    if (who.length === 1) return PEOPLE[who[0]].color;
+    const step = 100 / who.length;
+    return 'linear-gradient(' + who.map((p, i) => PEOPLE[p].color + ' ' + (i * step) + '% ' + ((i + 1) * step) + '%').join(',') + ')';
+  }
+  const whoNames = who => who.map(p => PEOPLE[p].name).join(' & ');
+  function relDay(d) {
+    const diff = Math.round((dayStart(d) - TODAY) / 864e5);
+    if (diff === 0) return 'Today';
+    if (diff === 1) return 'Tomorrow';
+    if (diff === -1) return 'Yesterday';
+    return fmt(d, { weekday: 'long' });
+  }
+
+  function eventHTML(e) {
+    const time = e.allDay
+      ? '<span class="allday">All day</span>'
+      : (t => '<b>' + t.t + '</b><small>' + t.ap + '</small>')(timeParts(e.start));
+    return '<div class="event">' +
+      '<div class="ev-time">' + time + '</div>' +
+      '<div class="ev-bar" style="background:' + whoColor(e.who) + '"></div>' +
+      '<div class="ev-body"><div class="ev-title">' + esc(e.title) + '</div>' +
+      '<div class="ev-meta">' + esc(whoNames(e.who)) + (e.where ? ' · ' + esc(e.where) : '') + '</div></div>' +
+    '</div>';
+  }
+
+  /* ---------- Header ---------- */
+  function renderHeader() {
+    $('#dateLabel').textContent = fmt(TODAY, { weekday: 'long', month: 'long', day: 'numeric' });
+    const h = NOW.getHours();
+    const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    const n = eventsOn(TODAY).length;
+    $('#greet').textContent = greet + ' · ' + (n ? plural(n, 'event') + ' today' : 'Nothing scheduled today');
+
+    const nowHM = pad(NOW.getHours()) + ':' + pad(NOW.getMinutes());
+    let next = null;
+    for (let i = 0; i < 14 && !next; i++) {
+      const d = addDays(TODAY, i);
+      for (const e of eventsOn(d)) {
+        if (i === 0 && (e.allDay || e.start < nowHM)) continue;
+        next = { e, d }; break;
+      }
+    }
+    const btn = $('#upNext');
+    if (!next) { btn.hidden = true; return; }
+    btn.innerHTML =
+      '<span class="un-bar" style="background:' + whoColor(next.e.who) + '"></span>' +
+      '<span class="un-body"><span class="un-label">Up next</span>' +
+      '<span class="un-title">' + esc(next.e.title) + '</span>' +
+      '<span class="un-meta">' + relDay(next.d) + ' · ' + timeText(next.e) + ' · ' + esc(whoNames(next.e.who)) + '</span></span>' +
+      '<span class="un-go">' + ICON.right + '</span>';
+    btn.onclick = () => { selectDay(next.d); goTo('calendar'); };
+  }
+
+  /* ---------- Calendar ---------- */
+  const cal = { y: TODAY.getFullYear(), m: TODAY.getMonth(), sel: TODAY };
+
+  function selectDay(d) { cal.sel = dayStart(d); cal.y = d.getFullYear(); cal.m = d.getMonth(); renderCalendar(); }
+
+  function renderCalendar() {
+    $('#calTitle').textContent = fmt(new Date(cal.y, cal.m, 1), { month: 'long', year: 'numeric' });
+    const lead = new Date(cal.y, cal.m, 1).getDay();
+    const days = new Date(cal.y, cal.m + 1, 0).getDate();
+    let html = '';
+    for (let i = 0; i < lead; i++) html += '<span class="day blank" aria-hidden="true"></span>';
+    for (let n = 1; n <= days; n++) {
+      const d = new Date(cal.y, cal.m, n), evs = eventsOn(d);
+      const seen = new Set(); evs.forEach(e => e.who.forEach(p => seen.add(p)));
+      const who = ORDER.filter(p => seen.has(p)).slice(0, 4);
+      const isSel = sameDay(d, cal.sel);
+      const cls = 'day' + (d < TODAY ? ' past' : '') + (sameDay(d, TODAY) ? ' today' : '') + (isSel ? ' selected' : '');
+      const label = fmt(d, { weekday: 'long', month: 'long', day: 'numeric' }) + ', ' + (evs.length ? plural(evs.length, 'event') : 'no events');
+      html += '<button type="button" class="' + cls + '" data-day="' + n + '" aria-label="' + label + '" aria-pressed="' + isSel + '">' +
+        '<span>' + n + '</span><span class="dots">' + who.map(p => '<i style="background:' + PEOPLE[p].color + '"></i>').join('') + '</span></button>';
+    }
+    $('#calGrid').innerHTML = html;
+    $('#calToday').hidden = sameDay(cal.sel, TODAY);
+    renderDayDetail();
+  }
+
+  function renderDayDetail() {
+    const d = cal.sel, evs = eventsOn(d), rel = relDay(d);
+    const isNamedDay = rel === 'Today' || rel === 'Tomorrow' || rel === 'Yesterday';
+    const within = Math.abs(Math.round((d - TODAY) / 864e5)) < 7;
+    const title = isNamedDay || within ? rel : fmt(d, { weekday: 'long' });
+    const sub = fmt(d, isNamedDay ? { weekday: 'long', month: 'long', day: 'numeric' } : { month: 'long', day: 'numeric' });
+    $('#dayDetail').innerHTML =
+      '<div class="dd-head"><div><div class="dd-title">' + title + '</div><div class="dd-sub">' + sub + '</div></div>' +
+      (evs.length ? '<span class="badge">' + plural(evs.length, 'event') + '</span>' : '') + '</div>' +
+      (evs.length ? '<div>' + evs.map(eventHTML).join('') + '</div>' : '<p class="empty">Nothing on the calendar. Enjoy the quiet.</p>');
+  }
+
+  $('#calPrev').innerHTML = ICON.left;
+  $('#calNext').innerHTML = ICON.right;
+  function shiftMonth(delta) {
+    const first = new Date(cal.y, cal.m + delta, 1);
+    cal.y = first.getFullYear(); cal.m = first.getMonth();
+    if (cal.y === TODAY.getFullYear() && cal.m === TODAY.getMonth()) cal.sel = TODAY;
+    else {
+      const days = new Date(cal.y, cal.m + 1, 0).getDate();
+      let pick = first;
+      for (let n = 1; n <= days; n++) { const d = new Date(cal.y, cal.m, n); if (eventsOn(d).length) { pick = d; break; } }
+      cal.sel = pick;
+    }
+    renderCalendar();
+  }
+  $('#calPrev').onclick = () => shiftMonth(-1);
+  $('#calNext').onclick = () => shiftMonth(1);
+  $('#calToday').onclick = () => selectDay(TODAY);
+  $('#calGrid').addEventListener('click', e => {
+    const b = e.target.closest('button.day'); if (!b) return;
+    cal.sel = new Date(cal.y, cal.m, +b.dataset.day);
+    renderCalendar();
+  });
+  $('#legend').innerHTML = ORDER.map(p => '<span><i style="background:' + PEOPLE[p].color + '"></i>' + PEOPLE[p].name + '</span>').join('');
+
+  /* ---------- Week Ahead ---------- */
+  function renderWeek() {
+    let html = '', total = 0;
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(TODAY, i), evs = eventsOn(d);
+      total += evs.length;
+      html += '<div class="wk-day' + (i === 0 ? ' is-today' : '') + '">' +
+        '<div class="wk-label"><b>' + relDay(d) + '</b><span>' + fmt(d, { month: 'short', day: 'numeric' }) + '</span></div>' +
+        (evs.length ? evs.map(eventHTML).join('') : '<p class="wk-empty">Nothing planned</p>') +
+      '</div>';
+    }
+    $('#weekList').innerHTML = html;
+    $('#weekSub').textContent = plural(total, 'event') + ' in the next 7 days';
+  }
+
+  /* ---------- Weather (sample numbers) ---------- */
+  const CLOUD = 'M6.5 19h11a4.5 4.5 0 0 0 .4-8.98A6 6 0 0 0 6.3 11.1 4 4 0 0 0 6.5 19z';
+  function wxIcon(kind, sw) {
+    const open = '<svg viewBox="0 0 24 24" fill="none" stroke-width="' + sw + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+    const sun = (cx, cy, r, ray, gap) => {
+      let rays = '';
+      for (let i = 0; i < 8; i++) {
+        const a = i * Math.PI / 4, r1 = r + gap, r2 = r + gap + ray;
+        rays += 'M' + (cx + r1 * Math.cos(a)).toFixed(2) + ' ' + (cy + r1 * Math.sin(a)).toFixed(2) + 'L' + (cx + r2 * Math.cos(a)).toFixed(2) + ' ' + (cy + r2 * Math.sin(a)).toFixed(2);
+      }
+      return '<g stroke="var(--accent)"><circle cx="' + cx + '" cy="' + cy + '" r="' + r + '"/><path d="' + rays + '"/></g>';
+    };
+    if (kind === 'sun') return open + sun(12, 12, 4.2, 2, 2.6) + '</svg>';
+    if (kind === 'cloud') return open + '<path d="' + CLOUD + '" stroke="var(--cloud)"/></svg>';
+    if (kind === 'rain') return open + '<path d="' + CLOUD + '" transform="translate(0 -3)" stroke="var(--cloud)"/><path d="M8.2 19.2l-1.1 2.3M12.2 19.2l-1.1 2.3M16.2 19.2l-1.1 2.3" stroke="var(--rob)"/></svg>';
+    // partly cloudy
+    return open + sun(8.2, 8.2, 3, 1.4, 1.8) +
+      '<path d="' + CLOUD + '" transform="translate(4.2 4.3) scale(.82)" stroke="var(--cloud)" fill="var(--card)" stroke-width="' + (sw / .82).toFixed(2) + '"/></svg>';
+  }
+
+  const WX = {
+    temp: 64, cond: 'Partly cloudy', icon: 'partly', feels: 62, wind: '8 mph S', humidity: '54%',
+    days: [
+      { hi: 68, lo: 47, icon: 'partly', pop: 0 },
+      { hi: 72, lo: 52, icon: 'sun', pop: 0 },
+      { hi: 66, lo: 55, icon: 'rain', pop: 60 },
+      { hi: 58, lo: 43, icon: 'cloud', pop: 20 },
+      { hi: 61, lo: 40, icon: 'sun', pop: 0 },
+    ],
+  };
+
+  function renderWeather() {
+    const lo = Math.min.apply(null, WX.days.map(d => d.lo)), hi = Math.max.apply(null, WX.days.map(d => d.hi));
+    const pct = v => ((v - lo) / (hi - lo) * 100).toFixed(1);
+    const rows = WX.days.map((d, i) => {
+      const date = addDays(TODAY, i);
+      const name = i === 0 ? 'Today' : fmt(date, { weekday: 'short' });
+      const now = i === 0 ? '<i style="left:' + pct(WX.temp) + '%"></i>' : '';
+      return '<div class="wx-row">' +
+        '<span class="wx-day">' + name + '</span>' +
+        '<span class="wx-ic">' + wxIcon(d.icon, 2) + (d.pop ? '<small>' + d.pop + '%</small>' : '') + '</span>' +
+        '<span class="wx-lo">' + d.lo + '°</span>' +
+        '<span class="range"><span style="left:' + pct(d.lo) + '%;width:' + (pct(d.hi) - pct(d.lo)).toFixed(1) + '%"></span>' + now + '</span>' +
+        '<span class="wx-hi">' + d.hi + '°</span>' +
+      '</div>';
+    }).join('');
+    $('#wx').innerHTML =
+      '<div class="wx-loc">' + ICON.pin + 'Corinth, TX</div>' +
+      '<div class="wx-now"><div>' +
+        '<div class="wx-temp">' + WX.temp + '°</div>' +
+        '<div class="wx-cond">' + WX.cond + '</div>' +
+        '<div class="wx-hl tnum">H ' + WX.days[0].hi + '°  ·  L ' + WX.days[0].lo + '°</div>' +
+      '</div><div class="wx-big">' + wxIcon(WX.icon, 1.25) + '</div></div>' +
+      '<div class="wx-stats">' +
+        '<div><small>Feels like</small><b>' + WX.feels + '°</b></div>' +
+        '<div><small>Wind</small><b>' + WX.wind + '</b></div>' +
+        '<div><small>Humidity</small><b>' + WX.humidity + '</b></div>' +
+      '</div>' + rows +
+      '<p class="wx-foot">Sample forecast · Updated ' + NOW.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + '</p>';
+  }
+
+  /* ---------- Shopping list ---------- */
+  let shop = [
+    { name: 'Diapers', note: 'Size 3', done: false },
+    { name: 'Whole milk', note: '2 gallons', done: false },
+    { name: 'Chicken thighs', note: 'For Monday tacos', done: false },
+    { name: 'Tortillas', done: false },
+    { name: 'Bananas', done: false },
+    { name: 'Coffee beans', done: true },
+    { name: 'Baby wipes', done: false },
+    { name: 'Goldfish crackers', done: false },
+    { name: 'Sweet potatoes', done: true },
+  ].map(i => Object.assign({ id: nextId() }, i));
+  let justAdded = null;
+
+  $('#shopAdd').innerHTML = ICON.plus;
+  function renderShop() {
+    const done = shop.filter(i => i.done).length;
+    $('#shopList').innerHTML = shop.length
+      ? shop.map(it =>
+          '<button type="button" class="item' + (it.done ? ' done' : '') + (it.id === justAdded ? ' pop' : '') + '" data-id="' + it.id + '" aria-pressed="' + it.done + '">' +
+            '<span class="check">' + ICON.check + '</span>' +
+            '<span class="item-text"><span class="item-name">' + esc(it.name) + '</span>' + (it.note ? '<span class="item-note">' + esc(it.note) + '</span>' : '') + '</span>' +
+          '</button>').join('')
+      : '<p class="empty" style="border-top:1px solid var(--line)">All set. Nothing on the list.</p>';
+    justAdded = null;
+    $('#shopStatus').textContent = shop.length ? done + ' of ' + shop.length + ' checked' : '';
+    $('#clearChecked').disabled = !done;
+    const left = shop.length - done;
+    $('#shopSub').textContent = left ? plural(left, 'item') + ' to get' : 'All done';
+  }
+  $('#shopForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = $('#shopInput'), name = inp.value.trim();
+    if (!name) { inp.focus(); return; }
+    const it = { id: nextId(), name: name.charAt(0).toUpperCase() + name.slice(1), done: false };
+    shop.unshift(it); justAdded = it.id;
+    inp.value = '';
+    renderShop();
+  });
+  $('#shopList').addEventListener('click', e => {
+    const b = e.target.closest('.item'); if (!b) return;
+    const it = shop.find(i => i.id === +b.dataset.id); if (!it) return;
+    it.done = !it.done;
+    renderShop();
+  });
+  $('#clearChecked').onclick = () => {
+    const before = shop.slice(), n = shop.filter(i => i.done).length;
+    shop = shop.filter(i => !i.done);
+    renderShop();
+    toast('Cleared ' + plural(n, 'item'), () => { shop = before; renderShop(); });
+  };
+
+  /* ---------- Meal plan ---------- */
+  const weekStart = addDays(TODAY, -TODAY.getDay());
+  let meals = [
+    'Pot roast & carrots',
+    'Chicken tacos',
+    'Spaghetti & meatballs',
+    'Sheet-pan salmon & green beans',
+    'Breakfast for dinner',
+    'Date night · boys get mac & cheese',
+    'Homemade pizza',
+  ];
+  let editing = null;
+
+  function renderMeals() {
+    const end = addDays(weekStart, 6);
+    $('#mealSub').textContent = 'Week of ' + fmt(weekStart, { month: 'short', day: 'numeric' }) + ' – ' +
+      fmt(end, end.getMonth() === weekStart.getMonth() ? { day: 'numeric' } : { month: 'short', day: 'numeric' });
+    $('#mealList').innerHTML = meals.map((m, i) => {
+      const d = addDays(weekStart, i), isToday = sameDay(d, TODAY);
+      const dayCol = '<span class="meal-day"><b>' + fmt(d, { weekday: 'short' }) + '</b><span>' + d.getDate() + '</span></span>';
+      if (editing === i) {
+        return '<form class="meal editing' + (isToday ? ' today' : '') + '" data-i="' + i + '">' + dayCol +
+          '<div class="meal-edit"><input class="input" type="text" value="' + esc(m) + '" placeholder="What’s for dinner?" enterkeyhint="done" maxlength="60" aria-label="Dinner on ' + fmt(d, { weekday: 'long' }) + '">' +
+          '<div class="edit-actions"><button type="button" class="text-btn quiet" data-act="cancel">Cancel</button><button type="submit" class="solid-btn">Save</button></div></div></form>';
+      }
+      return '<button type="button" class="meal' + (isToday ? ' today' : '') + '" data-i="' + i + '" aria-label="Edit dinner for ' + fmt(d, { weekday: 'long' }) + '">' + dayCol +
+        '<span class="meal-name' + (m ? '' : ' empty') + '">' + (isToday && m ? '<span class="tonight">Tonight</span><br>' : '') + (m ? esc(m) : 'Tap to plan') + '</span>' +
+        '<span class="meal-pen">' + ICON.pencil + '</span></button>';
+    }).join('');
+    $('#clearWeek').disabled = meals.every(m => !m);
+    if (editing !== null) {
+      const inp = $('#mealList .editing input');
+      inp.focus({ preventScroll: true });
+      const len = inp.value.length; inp.setSelectionRange(len, len);
+    }
+  }
+  function commitEdit() {
+    if (editing === null) return;
+    const inp = $('#mealList .editing input');
+    if (inp) meals[editing] = inp.value.trim();
+    editing = null;
+  }
+  $('#mealList').addEventListener('click', e => {
+    if (e.target.closest('[data-act="cancel"]')) { editing = null; renderMeals(); return; }
+    const row = e.target.closest('button.meal'); if (!row) return;
+    commitEdit();
+    editing = +row.dataset.i;
+    renderMeals();
+  });
+  $('#mealList').addEventListener('submit', e => { e.preventDefault(); commitEdit(); renderMeals(); });
+  $('#mealList').addEventListener('keydown', e => { if (e.key === 'Escape' && editing !== null) { editing = null; renderMeals(); } });
+  $('#clearWeek').onclick = () => {
+    const before = meals.slice();
+    editing = null;
+    meals = meals.map(() => '');
+    renderMeals();
+    toast('Meal plan cleared', () => { meals = before; renderMeals(); });
+  };
+
+  /* ---------- Notes ---------- */
+  const yesterdayEve = addDays(TODAY, -1).getTime() + (20 * 60 + 14) * MIN;
+  let notes = [
+    { by: 'hannah', at: NOW - 25 * MIN, done: false,
+      text: "Knox's checkup is " + fmt(addDays(TODAY, checkupOff), { weekday: 'long' }) + ' at 9:15. Bring his shot record.' },
+    { by: 'rob', at: NOW - 192 * MIN, done: false, text: 'Water bill is due Friday. Autopay is off this month.' },
+    { by: 'hannah', at: yesterdayEve, done: true, text: 'Kai needs a white shirt for the school program.' },
+  ].map(n => Object.assign({ id: nextId() }, n));
+  let author = 'rob';
+  let noteAdded = null;
+
+  function ago(ts) {
+    const m = Math.floor((Date.now() - ts) / MIN);
+    if (m < 1) return 'Just now';
+    if (m < 60) return m + ' min ago';
+    const d = new Date(ts), time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const today = dayStart(new Date());
+    if (sameDay(d, today)) return 'Today, ' + time;
+    if (sameDay(d, addDays(today, -1))) return 'Yesterday, ' + time;
+    return fmt(d, { month: 'short', day: 'numeric' }) + ', ' + time;
+  }
+
+  function renderNotes() {
+    $('#noteList').innerHTML = notes.length
+      ? notes.map(n =>
+          '<div class="note' + (n.done ? ' done' : '') + (n.id === noteAdded ? ' pop' : '') + '" data-id="' + n.id + '">' +
+            '<button type="button" class="note-check" data-act="toggle" aria-pressed="' + n.done + '" aria-label="' + (n.done ? 'Mark as not done' : 'Mark as done') + '"><span class="check">' + ICON.check + '</span></button>' +
+            '<div class="note-body"><p class="note-text">' + esc(n.text) + '</p>' +
+              '<p class="note-meta"><i style="background:' + PEOPLE[n.by].color + '"></i>' + PEOPLE[n.by].name + ' · ' + ago(n.at) + '</p></div>' +
+            '<button type="button" class="note-del" data-act="del" aria-label="Delete note">' + ICON.trash + '</button>' +
+          '</div>').join('')
+      : '<p class="empty" style="border-top:1px solid var(--line)">No notes yet.</p>';
+    noteAdded = null;
+    const open = notes.filter(n => !n.done).length;
+    $('#noteSub').textContent = notes.length ? plural(open, 'open note') : '';
+  }
+  $('#authorSeg').addEventListener('click', e => {
+    const b = e.target.closest('.seg-btn'); if (!b) return;
+    author = b.dataset.by;
+    document.querySelectorAll('#authorSeg .seg-btn').forEach(x => x.setAttribute('aria-checked', String(x === b)));
+  });
+  $('#noteForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = $('#noteInput'), text = inp.value.trim();
+    if (!text) { inp.focus(); return; }
+    const n = { id: nextId(), by: author, at: Date.now(), done: false, text };
+    notes.unshift(n); noteAdded = n.id;
+    inp.value = '';
+    inp.blur();
+    renderNotes();
+  });
+  $('#noteList').addEventListener('click', e => {
+    const btn = e.target.closest('[data-act]'); if (!btn) return;
+    const id = +btn.closest('.note').dataset.id, idx = notes.findIndex(n => n.id === id);
+    if (idx < 0) return;
+    if (btn.dataset.act === 'toggle') { notes[idx].done = !notes[idx].done; renderNotes(); }
+    else {
+      const removed = notes.splice(idx, 1)[0];
+      renderNotes();
+      toast('Note deleted', () => { notes.splice(idx, 0, removed); renderNotes(); });
+    }
+  });
+  setInterval(renderNotes, MIN);
+
+  /* ---------- Toast with undo ---------- */
+  let toastTimer = null, undoFn = null;
+  const toastEl = $('#toast');
+  function hideToast() { toastEl.classList.remove('show'); undoFn = null; }
+  function toast(msg, undo) {
+    $('#toastMsg').textContent = msg;
+    undoFn = undo || null;
+    $('#toastUndo').hidden = !undo;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, 5000);
+  }
+  $('#toastUndo').onclick = () => { if (undoFn) undoFn(); clearTimeout(toastTimer); hideToast(); };
+
+  /* ---------- Sticky shortcut bar + scroll spy ---------- */
+  const jump = $('#jump'), track = $('#jumpTrack'), header = $('.top');
+  const sections = Array.prototype.slice.call(document.querySelectorAll('main .section'));
+  let active = 'calendar', spyLock = false, lockTimer = null;
+
+  function setActive(id) {
+    if (id === active) return;
+    active = id;
+    track.querySelectorAll('.chip').forEach(c => {
+      const on = c.dataset.target === id;
+      c.classList.toggle('active', on);
+      if (on) {
+        c.setAttribute('aria-current', 'true');
+        track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+      } else c.removeAttribute('aria-current');
+    });
+  }
+  function spy() {
+    jump.classList.toggle('stuck', window.scrollY > header.offsetHeight - 2);
+    if (spyLock) return;
+    const line = jump.offsetHeight + 60;
+    let current = sections[0].id;
+    sections.forEach(s => { if (s.getBoundingClientRect().top <= line) current = s.id; });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = sections[sections.length - 1].id;
+    setActive(current);
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => { ticking = false; spy(); });
+  }, { passive: true });
+  function unlock() { spyLock = false; clearTimeout(lockTimer); spy(); }
+  window.addEventListener('scrollend', () => { if (spyLock) unlock(); });
+
+  function goTo(id) {
+    spyLock = true; clearTimeout(lockTimer); lockTimer = setTimeout(unlock, 1000);
+    setActive(id);
+    document.getElementById(id).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+  track.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    e.preventDefault();
+    goTo(c.dataset.target);
+  });
+
+  /* ---------- Go ---------- */
+  renderHeader();
+  renderCalendar();
+  renderWeek();
+  renderWeather();
+  renderShop();
+  renderMeals();
+  renderNotes();
+  spy();
+})();
+</script>
+</body>
+</html>
