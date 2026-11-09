@@ -37,9 +37,12 @@
   --r-sm:14px;
   --safe-t:env(safe-area-inset-top,0px);
   --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px);
+  --safe-r:env(safe-area-inset-right,0px);
   --ease:cubic-bezier(.2,.8,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
   background:var(--bg);color:var(--text);
@@ -104,6 +107,7 @@ h2{font-size:25px;line-height:1.15;font-weight:750;letter-spacing:-.02em}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .card + .card{margin-top:12px}
 .empty{color:var(--muted);font-size:16px;padding:18px 16px}
+.list-empty{border-top:1px solid var(--line)}
 
 .text-btn{
   min-height:44px;padding:0 12px;border-radius:12px;color:var(--accent);font-weight:650;font-size:16px;
@@ -261,7 +265,6 @@ button.meal:active{background:var(--card-2)}
 .ta{min-height:84px;padding:14px 16px;resize:none;line-height:1.4;display:block}
 .composer-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .seg{display:flex;background:var(--bg-2);border:1px solid var(--line-2);border-radius:14px;padding:3px;gap:2px}
-.seg-label{font-size:14px;color:var(--muted);font-weight:600;margin-right:2px}
 .seg-btn{min-height:42px;padding:0 14px;border-radius:11px;font-size:16px;font-weight:620;color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:background .15s,color .15s}
 .seg-btn i{width:8px;height:8px;border-radius:50%;display:block}
 .seg-btn[aria-checked="true"]{background:var(--card-3);color:var(--text)}
@@ -279,7 +282,7 @@ button.meal:active{background:var(--card-2)}
 /* ---------- Footer + toast ---------- */
 .foot{text-align:center;color:var(--faint);font-size:14px;padding:36px 24px 0;line-height:1.5}
 .toast{
-  position:fixed;left:50%;bottom:calc(16px + var(--safe-b));z-index:50;width:calc(100% - 32px);max-width:408px;
+  position:fixed;left:50%;bottom:calc(16px + var(--safe-b));z-index:70;width:calc(100% - 32px);max-width:408px;
   transform:translate(-50%,calc(100% + 40px));opacity:0;transition:transform .32s var(--ease),opacity .2s;
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   background:#22345A;border:1px solid var(--line-2);border-radius:18px;padding:6px 6px 6px 18px;
@@ -287,12 +290,177 @@ button.meal:active{background:var(--card-2)}
 }
 .toast.show{transform:translate(-50%,0);opacity:1}
 
+/* =====================================================================
+   iPad / large-screen layout (same data, full-screen dashboard)
+   ===================================================================== */
+.pad{display:none}
+.sheet-wrap{
+  position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;
+  background:rgba(3,8,18,.62);opacity:0;transition:opacity .2s;
+}
+.sheet-wrap.show{opacity:1}
+.sheet{
+  position:relative;width:min(480px,100%);max-height:80vh;overflow:auto;background:var(--card);
+  border:1px solid var(--line-2);border-radius:26px;padding:22px 22px 10px;box-shadow:0 30px 80px rgba(0,0,0,.55);
+  transform:translateY(14px) scale(.98);transition:transform .26s var(--ease);
+}
+.sheet-wrap.show .sheet{transform:none}
+.sheet .dd{padding:0}
+.sheet .dd-head{padding-right:56px}
+.sheet .dd-title{font-size:24px}
+.sheet .ev-title{font-size:18px}
+.sheet-x{position:absolute;top:16px;right:16px}
+
+@media (min-width:768px) and (min-height:600px){
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+  .app{display:none}
+  .pad{
+    display:grid;grid-template-columns:clamp(300px,29vw,370px) minmax(0,1fr);gap:16px;
+    height:100vh;height:100dvh;max-width:1480px;margin:0 auto;
+    padding:calc(var(--safe-t) + 16px) calc(var(--safe-r) + 16px) calc(var(--safe-b) + 16px) calc(var(--safe-l) + 16px);
+    background:radial-gradient(55% 45% at 0% 0%,rgba(244,184,96,.08),transparent 70%),
+               radial-gradient(45% 40% at 100% 0%,rgba(111,168,255,.06),transparent 70%);
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  .pad input,.pad textarea{-webkit-user-select:text;user-select:text}
+  .pad .card + .card{margin-top:0}
+
+  /* Left rail: always-visible "glance" column */
+  .rail{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+  .r-clock{padding:4px 6px 2px;flex:none}
+  .r-family{font-size:20px;font-weight:750;letter-spacing:-.01em}
+  .r-time{font-size:72px;font-weight:250;line-height:1;letter-spacing:-.045em;margin-top:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .r-time span{font-size:22px;font-weight:550;letter-spacing:0;margin-left:8px;color:var(--muted)}
+  .r-date{font-size:20px;font-weight:650;color:var(--accent);margin-top:8px}
+  .r-wx{padding:14px 16px 12px;flex:none;display:flex;flex-direction:column;justify-content:space-between}
+  .rw-now{display:flex;align-items:center;gap:12px;margin-top:8px}
+  .rw-ic{width:58px;height:58px;flex:none}
+  .rw-ic svg{width:100%;height:100%}
+  .rw-temp{font-size:46px;font-weight:300;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .rw-cond{font-size:15px;color:var(--muted);line-height:1.35}
+  .rw-cond b{display:block;color:var(--text);font-size:16px;font-weight:650}
+  .rw-cond span{display:block;white-space:nowrap}
+  .rw-days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:12px;padding-top:10px;border-top:1px solid var(--line);text-align:center}
+  .rw-days b{display:block;font-size:13px;font-weight:700;color:var(--muted)}
+  .rw-days svg{width:26px;height:26px;margin:5px auto 4px}
+  .rw-days span{display:block;font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}
+  .rw-days small{display:block;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .r-today{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 16px 0}
+  .r-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:2px}
+  .r-head h3{font-size:20px;font-weight:750;letter-spacing:-.01em}
+  .r-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0 -16px;padding:0 16px 8px;scrollbar-width:none}
+  .r-scroll::-webkit-scrollbar{display:none}
+  .r-today .ev-time{width:54px}
+  .r-sub{font-size:13px;font-weight:750;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:12px 0 0;margin-top:2px;border-top:1px solid var(--line)}
+  .r-empty{color:var(--muted);font-size:16px;padding:10px 0 12px}
+  .event.is-past{opacity:.4}
+  .r-dinner{flex:none;display:flex;align-items:center;gap:14px;padding:14px 14px 14px 16px;text-align:left;width:100%;transition:background .15s}
+  .r-dinner:active{background:var(--card-2)}
+  .rd-ic{width:44px;height:44px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+  .rd-ic svg{width:22px;height:22px}
+  .rd-body{flex:1;min-width:0}
+  .rd-body small{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .rd-body b{display:block;font-size:18px;font-weight:650;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rd-body b.unset{color:var(--faint);font-weight:550}
+
+  /* Right side: tabs + one panel at a time */
+  .main{display:flex;flex-direction:column;gap:12px;min-height:0;min-width:0}
+  .tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:5px;flex:none}
+  .tabs button{
+    flex:1;min-width:0;height:50px;border-radius:13px;font-size:17px;font-weight:650;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:background .2s,color .2s;
+  }
+  .tabs button:active{background:var(--card-2)}
+  .tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+  .tab-badge{min-width:24px;height:24px;border-radius:12px;padding:0 7px;font-size:13px;font-weight:750;background:var(--card-3);color:var(--text);display:inline-grid;place-items:center;font-variant-numeric:tabular-nums}
+  .tabs button[aria-selected="true"] .tab-badge{background:rgba(36,24,6,.16);color:var(--accent-ink)}
+  .panel{flex:1;min-height:0;display:flex;flex-direction:column;animation:fadein .22s var(--ease)}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .panel-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:18px 20px 14px;flex:none}
+  .panel-head h2{font-size:26px}
+  .panel-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .pad .ev-title{font-size:18px}
+
+  /* Calendar panel: month grid with event titles */
+  .pc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 10px 20px;flex:none}
+  .pc-head h2{font-size:26px}
+  .pc-dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));padding:0 0 8px;flex:none}
+  .pc-dow span{padding-left:10px;font-size:13px;font-weight:700;color:var(--faint);letter-spacing:.07em;text-transform:uppercase}
+  .pc-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .pc-cell{background:var(--card);display:flex;flex-direction:column;align-items:stretch;gap:3px;padding:5px 5px 4px;min-height:0;min-width:0;overflow:hidden;text-align:left;transition:background .15s}
+  button.pc-cell:active,.pc-cell.selected{background:var(--card-2)}
+  .pc-cell.out{background:#0E1930}
+  .pc-num{width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:50%;font-size:15px;font-weight:650;font-variant-numeric:tabular-nums;margin-left:1px}
+  .pc-cell.past .pc-num{color:var(--faint)}
+  .pc-cell.past .pc-ev{opacity:.5}
+  .pc-cell.today .pc-num{background:var(--accent);color:var(--accent-ink);font-weight:750}
+  .pc-evs{display:flex;flex-direction:column;gap:2px;min-height:0}
+  .pc-ev{
+    display:flex;align-items:center;gap:5px;height:18px;flex:none;border-radius:5px;padding-right:4px;overflow:hidden;
+    font-size:12.5px;font-weight:600;line-height:18px;white-space:nowrap;color:#E2E8F4;
+    background:rgba(148,170,214,.10);background:color-mix(in srgb,var(--c) 17%,transparent);
+  }
+  .pc-ev i{width:3px;align-self:stretch;flex:none}
+  .pc-ev span{overflow:hidden;text-overflow:ellipsis}
+  .pc-more{font-size:12px;line-height:14px;color:var(--muted);font-weight:700;padding-left:4px}
+  .pad .legend{border-top:0;margin:0;padding:12px 12px 13px;flex:none}
+
+  /* Week panel: planner rows */
+  .pw-day{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px;padding:12px 20px 4px;border-top:1px solid var(--line)}
+  .pw-date{padding-top:10px}
+  .pw-date b{display:block;font-size:19px;font-weight:750;letter-spacing:-.01em}
+  .pw-date span{display:block;font-size:15px;color:var(--muted);margin-top:2px}
+  .pw-day.is-today .pw-date b{color:var(--accent)}
+  .pw-day .wk-empty{padding:12px 0 14px 88px}
+
+  /* Shopping panel: two-column tiles */
+  .pad .add{padding:0 16px 14px;flex:none}
+  .p-shop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 16px 16px}
+  .p-shop .item{border:1px solid var(--line);border-radius:16px;background:rgba(148,170,214,.04);min-height:64px}
+  .p-shop .list-empty,.p-notes .list-empty{grid-column:1/-1;border-top:0;padding:8px 4px}
+
+  /* Meals panel */
+  #pMealList{border-top:1px solid var(--line)}
+  .pad .meal{min-height:72px;padding:10px 16px 10px 20px}
+  .pad .meal-name{font-size:19px}
+  .pad .meal-day{width:52px}
+  .pad .meal-day span{font-size:22px}
+
+  /* Notes panel: two-column cards */
+  .pad .composer{padding:0 16px 14px;flex:none}
+  .pad .ta{min-height:64px}
+  .p-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 16px 16px;align-items:start}
+  .p-notes .note{border:1px solid var(--line);border-radius:16px;background:rgba(148,170,214,.04);padding:6px 4px}
+  .p-notes .note-text{font-size:18px}
+}
+
+/* iPad portrait: glance strip on top, panel below */
+@media (min-width:768px) and (min-height:600px) and (orientation:portrait){
+  .pad{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .rail{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto minmax(0,1fr);
+    grid-template-areas:"clock wx today" "dinner wx today";height:310px;
+  }
+  .r-clock{grid-area:clock}
+  .r-wx{grid-area:wx}
+  .r-today{grid-area:today}
+  .r-dinner{grid-area:dinner;align-self:end}
+  .r-dinner .un-go{display:none}
+  .r-time{font-size:60px}
+  .rw-now{flex-wrap:wrap;row-gap:6px}
+  .rw-cond{flex-basis:100%}
+  .rw-cond b,.rw-cond span{display:inline}
+  .rw-cond span::before{content:" · "}
+}
+
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
 </style>
 </head>
 <body>
+
+<!-- ================= Phone layout ================= -->
 <div class="app">
 
   <header class="top">
@@ -351,7 +519,7 @@ button.meal:active{background:var(--card-2)}
       <div class="card">
         <form class="add" id="shopForm" autocomplete="off">
           <input class="input" id="shopInput" type="text" placeholder="Add an item…" aria-label="New shopping item" enterkeyhint="done" maxlength="60">
-          <button class="add-btn" type="submit" aria-label="Add item" id="shopAdd"></button>
+          <button class="add-btn" type="submit" aria-label="Add item"></button>
         </form>
         <div id="shopList"></div>
         <div class="list-foot">
@@ -377,7 +545,7 @@ button.meal:active{background:var(--card-2)}
         <form class="composer" id="noteForm" autocomplete="off">
           <textarea class="input ta" id="noteInput" rows="2" placeholder="Leave a note for the family…" aria-label="New note" maxlength="280"></textarea>
           <div class="composer-row">
-            <div class="seg" role="radiogroup" aria-label="Note from" id="authorSeg">
+            <div class="seg" role="radiogroup" aria-label="Note from">
               <button type="button" class="seg-btn" role="radio" aria-checked="true" data-by="rob"><i style="background:var(--rob)"></i>Rob</button>
               <button type="button" class="seg-btn" role="radio" aria-checked="false" data-by="hannah"><i style="background:var(--hannah)"></i>Hannah</button>
             </div>
@@ -392,6 +560,94 @@ button.meal:active{background:var(--card-2)}
   <p class="foot">Design preview with sample data.<br>Changes reset when you refresh.</p>
 </div>
 
+<!-- ================= iPad layout ================= -->
+<div class="pad">
+  <aside class="rail" aria-label="Today at a glance">
+    <div class="r-clock">
+      <p class="r-family">McAfee Family</p>
+      <p class="r-time" id="pTime"></p>
+      <p class="r-date" id="pDate"></p>
+    </div>
+    <div class="card r-wx" id="pWx"></div>
+    <div class="card r-today">
+      <div class="r-head"><h3>Today</h3><span class="badge" id="pTodayCount"></span></div>
+      <div class="r-scroll" id="pToday"></div>
+    </div>
+    <button class="card r-dinner" id="pDinner" type="button"></button>
+  </aside>
+
+  <section class="main">
+    <div class="tabs" role="tablist" id="pTabs" aria-label="Sections">
+      <button type="button" role="tab" data-tab="calendar" aria-selected="true">Calendar</button>
+      <button type="button" role="tab" data-tab="week" aria-selected="false">Week Ahead</button>
+      <button type="button" role="tab" data-tab="shopping" aria-selected="false">Shopping <span class="tab-badge" id="pShopBadge"></span></button>
+      <button type="button" role="tab" data-tab="meals" aria-selected="false">Meals</button>
+      <button type="button" role="tab" data-tab="notes" aria-selected="false">Notes <span class="tab-badge" id="pNoteBadge"></span></button>
+    </div>
+
+    <div class="card panel" data-panel="calendar" role="tabpanel">
+      <div class="pc-head">
+        <h2 id="pCalTitle"></h2>
+        <div class="cal-nav">
+          <button class="text-btn" id="pCalToday" type="button" hidden>Today</button>
+          <button class="icon-btn" id="pCalPrev" type="button" aria-label="Previous month"></button>
+          <button class="icon-btn" id="pCalNext" type="button" aria-label="Next month"></button>
+        </div>
+      </div>
+      <div class="pc-dow" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+      <div class="pc-grid" id="pCalGrid"></div>
+      <div class="legend" id="pLegend"></div>
+    </div>
+
+    <div class="card panel" data-panel="week" role="tabpanel" hidden>
+      <div class="panel-head"><div><h2>Week Ahead</h2><p class="sec-sub" id="pWeekSub"></p></div></div>
+      <div class="panel-scroll" id="pWeek"></div>
+    </div>
+
+    <div class="card panel" data-panel="shopping" role="tabpanel" hidden>
+      <div class="panel-head">
+        <div><h2>Shopping List</h2><p class="sec-sub" id="pShopSub"></p></div>
+        <button class="text-btn" id="pClearChecked" type="button">Clear checked</button>
+      </div>
+      <form class="add" id="pShopForm" autocomplete="off">
+        <input class="input" type="text" placeholder="Add an item…" aria-label="New shopping item" enterkeyhint="done" maxlength="60">
+        <button class="add-btn" type="submit" aria-label="Add item"></button>
+      </form>
+      <div class="panel-scroll"><div class="p-shop" id="pShopList"></div></div>
+    </div>
+
+    <div class="card panel" data-panel="meals" role="tabpanel" hidden>
+      <div class="panel-head">
+        <div><h2>Meal Plan</h2><p class="sec-sub" id="pMealSub"></p></div>
+        <button class="text-btn" id="pClearWeek" type="button">Clear week</button>
+      </div>
+      <div class="panel-scroll" id="pMealList"></div>
+    </div>
+
+    <div class="card panel" data-panel="notes" role="tabpanel" hidden>
+      <div class="panel-head"><div><h2>Notes</h2><p class="sec-sub" id="pNoteSub"></p></div></div>
+      <form class="composer" id="pNoteForm" autocomplete="off">
+        <textarea class="input ta" rows="2" placeholder="Leave a note for the family…" aria-label="New note" maxlength="280"></textarea>
+        <div class="composer-row">
+          <div class="seg" role="radiogroup" aria-label="Note from">
+            <button type="button" class="seg-btn" role="radio" aria-checked="true" data-by="rob"><i style="background:var(--rob)"></i>Rob</button>
+            <button type="button" class="seg-btn" role="radio" aria-checked="false" data-by="hannah"><i style="background:var(--hannah)"></i>Hannah</button>
+          </div>
+          <button class="solid-btn" type="submit">Add note</button>
+        </div>
+      </form>
+      <div class="panel-scroll"><div class="p-notes" id="pNoteList"></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="sheet-wrap" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Day details">
+    <button class="icon-btn sheet-x" id="sheetClose" type="button" aria-label="Close"></button>
+    <div class="dd" id="sheetBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite">
   <span id="toastMsg"></span>
   <button class="text-btn" id="toastUndo" type="button">Undo</button>
@@ -403,6 +659,8 @@ button.meal:active{background:var(--card-2)}
 
   /* ---------- Helpers ---------- */
   const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.prototype.slice.call(r.querySelectorAll(s));
+  const visible = s => $$(s).find(el => el.getClientRects().length > 0);
   const pad = n => String(n).padStart(2, '0');
   const keyOf = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
   const dayStart = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -411,6 +669,8 @@ button.meal:active{background:var(--card-2)}
   const fmt = (d, o) => d.toLocaleDateString('en-US', o);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+  const toMin = hm => { const p = hm.split(':'); return +p[0] * 60 + +p[1]; };
+  const minutesNow = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let uid = 0; const nextId = () => ++uid;
 
@@ -424,9 +684,11 @@ button.meal:active{background:var(--card-2)}
     right: svg('<path d="M9.5 6l6 6-6 6"/>', 2.4),
     plus: svg('<path d="M12 5v14M5 12h14"/>', 2.6),
     check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 3.2),
+    close: svg('<path d="M6 6l12 12M18 6L6 18"/>', 2.4),
     trash: svg('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>'),
     pencil: svg('<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>'),
     pin: svg('<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
+    dinner: svg('<path d="M5 3v6a3 3 0 0 0 6 0V3M8 3v18M19 21V3c-2.2 0-4 2.5-4 6v4h4"/>'),
   };
 
   const PEOPLE = {
@@ -506,11 +768,11 @@ button.meal:active{background:var(--card-2)}
     return fmt(d, { weekday: 'long' });
   }
 
-  function eventHTML(e) {
+  function eventHTML(e, cls) {
     const time = e.allDay
       ? '<span class="allday">All day</span>'
       : (t => '<b>' + t.t + '</b><small>' + t.ap + '</small>')(timeParts(e.start));
-    return '<div class="event">' +
+    return '<div class="event' + (cls ? ' ' + cls : '') + '">' +
       '<div class="ev-time">' + time + '</div>' +
       '<div class="ev-bar" style="background:' + whoColor(e.who) + '"></div>' +
       '<div class="ev-body"><div class="ev-title">' + esc(e.title) + '</div>' +
@@ -518,7 +780,18 @@ button.meal:active{background:var(--card-2)}
     '</div>';
   }
 
-  /* ---------- Header ---------- */
+  function dayDetailHTML(d) {
+    const evs = eventsOn(d), rel = relDay(d);
+    const isNamedDay = rel === 'Today' || rel === 'Tomorrow' || rel === 'Yesterday';
+    const within = Math.abs(Math.round((d - TODAY) / 864e5)) < 7;
+    const title = isNamedDay || within ? rel : fmt(d, { weekday: 'long' });
+    const sub = fmt(d, isNamedDay ? { weekday: 'long', month: 'long', day: 'numeric' } : { month: 'long', day: 'numeric' });
+    return '<div class="dd-head"><div><div class="dd-title">' + title + '</div><div class="dd-sub">' + sub + '</div></div>' +
+      (evs.length ? '<span class="badge">' + plural(evs.length, 'event') + '</span>' : '') + '</div>' +
+      (evs.length ? '<div>' + evs.map(e => eventHTML(e)).join('') + '</div>' : '<p class="empty">Nothing on the calendar. Enjoy the quiet.</p>');
+  }
+
+  /* ---------- Phone header ---------- */
   function renderHeader() {
     $('#dateLabel').textContent = fmt(TODAY, { weekday: 'long', month: 'long', day: 'numeric' });
     const h = NOW.getHours();
@@ -546,8 +819,9 @@ button.meal:active{background:var(--card-2)}
     btn.onclick = () => { selectDay(next.d); goTo('calendar'); };
   }
 
-  /* ---------- Calendar ---------- */
+  /* ---------- Calendar (phone grid + iPad month view share one month) ---------- */
   const cal = { y: TODAY.getFullYear(), m: TODAY.getMonth(), sel: TODAY };
+  let padSel = null;
 
   function selectDay(d) { cal.sel = dayStart(d); cal.y = d.getFullYear(); cal.m = d.getMonth(); renderCalendar(); }
 
@@ -569,23 +843,39 @@ button.meal:active{background:var(--card-2)}
     }
     $('#calGrid').innerHTML = html;
     $('#calToday').hidden = sameDay(cal.sel, TODAY);
-    renderDayDetail();
+    $('#dayDetail').innerHTML = dayDetailHTML(cal.sel);
+    renderPadCalendar();
   }
 
-  function renderDayDetail() {
-    const d = cal.sel, evs = eventsOn(d), rel = relDay(d);
-    const isNamedDay = rel === 'Today' || rel === 'Tomorrow' || rel === 'Yesterday';
-    const within = Math.abs(Math.round((d - TODAY) / 864e5)) < 7;
-    const title = isNamedDay || within ? rel : fmt(d, { weekday: 'long' });
-    const sub = fmt(d, isNamedDay ? { weekday: 'long', month: 'long', day: 'numeric' } : { month: 'long', day: 'numeric' });
-    $('#dayDetail').innerHTML =
-      '<div class="dd-head"><div><div class="dd-title">' + title + '</div><div class="dd-sub">' + sub + '</div></div>' +
-      (evs.length ? '<span class="badge">' + plural(evs.length, 'event') + '</span>' : '') + '</div>' +
-      (evs.length ? '<div>' + evs.map(eventHTML).join('') + '</div>' : '<p class="empty">Nothing on the calendar. Enjoy the quiet.</p>');
+  function renderPadCalendar() {
+    const grid = $('#pCalGrid');
+    $('#pCalTitle').textContent = fmt(new Date(cal.y, cal.m, 1), { month: 'long', year: 'numeric' });
+    $('#pCalToday').hidden = cal.y === TODAY.getFullYear() && cal.m === TODAY.getMonth();
+    const lead = new Date(cal.y, cal.m, 1).getDay(), days = new Date(cal.y, cal.m + 1, 0).getDate();
+    const rows = Math.ceil((lead + days) / 7);
+    grid.style.gridTemplateRows = 'repeat(' + rows + ', minmax(0, 1fr))';
+    // Fit as many event chips as the row height allows (it changes with orientation).
+    const rowH = grid.clientHeight ? (grid.clientHeight - (rows - 1)) / rows : 100;
+    const space = rowH - 38, CHIP = 20, MORE = 16;
+    let html = '';
+    for (let i = 0; i < lead; i++) html += '<div class="pc-cell out"></div>';
+    for (let n = 1; n <= days; n++) {
+      const d = new Date(cal.y, cal.m, n), evs = eventsOn(d);
+      const show = evs.length * CHIP - 2 <= space ? evs : evs.slice(0, Math.max(0, Math.floor((space - MORE) / CHIP)));
+      const more = evs.length - show.length;
+      const cls = 'pc-cell' + (d < TODAY ? ' past' : '') + (sameDay(d, TODAY) ? ' today' : '') + (padSel && sameDay(d, padSel) ? ' selected' : '');
+      const label = fmt(d, { weekday: 'long', month: 'long', day: 'numeric' }) + ', ' + (evs.length ? plural(evs.length, 'event') : 'no events');
+      html += '<button type="button" class="' + cls + '" data-day="' + n + '" aria-label="' + label + '">' +
+        '<span class="pc-num">' + n + '</span><span class="pc-evs">' +
+        show.map(e => '<span class="pc-ev" style="--c:' + PEOPLE[e.who[0]].color + '"><i style="background:' + whoColor(e.who) + '"></i><span>' + esc(e.title) + '</span></span>').join('') +
+        (more ? '<span class="pc-more">+' + more + ' more</span>' : '') +
+        '</span></button>';
+    }
+    for (let i = lead + days; i < rows * 7; i++) html += '<div class="pc-cell out"></div>';
+    grid.innerHTML = html;
   }
 
-  $('#calPrev').innerHTML = ICON.left;
-  $('#calNext').innerHTML = ICON.right;
+  [['#calPrev', '#pCalPrev', ICON.left], ['#calNext', '#pCalNext', ICON.right]].forEach(t => { $(t[0]).innerHTML = t[2]; $(t[1]).innerHTML = t[2]; });
   function shiftMonth(delta) {
     const first = new Date(cal.y, cal.m + delta, 1);
     cal.y = first.getFullYear(); cal.m = first.getMonth();
@@ -598,29 +888,58 @@ button.meal:active{background:var(--card-2)}
     }
     renderCalendar();
   }
-  $('#calPrev').onclick = () => shiftMonth(-1);
-  $('#calNext').onclick = () => shiftMonth(1);
-  $('#calToday').onclick = () => selectDay(TODAY);
+  $('#calPrev').onclick = $('#pCalPrev').onclick = () => shiftMonth(-1);
+  $('#calNext').onclick = $('#pCalNext').onclick = () => shiftMonth(1);
+  $('#calToday').onclick = $('#pCalToday').onclick = () => selectDay(TODAY);
   $('#calGrid').addEventListener('click', e => {
     const b = e.target.closest('button.day'); if (!b) return;
     cal.sel = new Date(cal.y, cal.m, +b.dataset.day);
     renderCalendar();
   });
-  $('#legend').innerHTML = ORDER.map(p => '<span><i style="background:' + PEOPLE[p].color + '"></i>' + PEOPLE[p].name + '</span>').join('');
+  $('#pCalGrid').addEventListener('click', e => {
+    const b = e.target.closest('button.pc-cell'); if (!b) return;
+    openSheet(new Date(cal.y, cal.m, +b.dataset.day));
+  });
+  const legendHTML = ORDER.map(p => '<span><i style="background:' + PEOPLE[p].color + '"></i>' + PEOPLE[p].name + '</span>').join('');
+  $('#legend').innerHTML = $('#pLegend').innerHTML = legendHTML;
+
+  /* ---------- iPad day sheet ---------- */
+  const sheet = $('#sheet');
+  let sheetTimer = null;
+  $('#sheetClose').innerHTML = ICON.close;
+  function openSheet(d) {
+    clearTimeout(sheetTimer);
+    padSel = d; renderPadCalendar();
+    $('#sheetBody').innerHTML = dayDetailHTML(d);
+    sheet.hidden = false;
+    requestAnimationFrame(() => sheet.classList.add('show'));
+  }
+  function closeSheet() {
+    if (sheet.hidden) return;
+    sheet.classList.remove('show');
+    padSel = null; renderPadCalendar();
+    sheetTimer = setTimeout(() => { sheet.hidden = true; }, reduceMotion ? 0 : 200);
+  }
+  $('#sheetClose').onclick = closeSheet;
+  sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
   /* ---------- Week Ahead ---------- */
   function renderWeek() {
-    let html = '', total = 0;
+    let html = '', padHtml = '', total = 0;
     for (let i = 0; i < 7; i++) {
       const d = addDays(TODAY, i), evs = eventsOn(d);
       total += evs.length;
+      const list = evs.length ? evs.map(e => eventHTML(e)).join('') : '<p class="wk-empty">Nothing planned</p>';
       html += '<div class="wk-day' + (i === 0 ? ' is-today' : '') + '">' +
-        '<div class="wk-label"><b>' + relDay(d) + '</b><span>' + fmt(d, { month: 'short', day: 'numeric' }) + '</span></div>' +
-        (evs.length ? evs.map(eventHTML).join('') : '<p class="wk-empty">Nothing planned</p>') +
-      '</div>';
+        '<div class="wk-label"><b>' + relDay(d) + '</b><span>' + fmt(d, { month: 'short', day: 'numeric' }) + '</span></div>' + list + '</div>';
+      padHtml += '<div class="pw-day' + (i === 0 ? ' is-today' : '') + '">' +
+        '<div class="pw-date"><b>' + relDay(d) + '</b><span>' + fmt(d, { weekday: i < 2 ? 'short' : undefined, month: 'short', day: 'numeric' }) + '</span></div>' +
+        '<div>' + list + '</div></div>';
     }
     $('#weekList').innerHTML = html;
-    $('#weekSub').textContent = plural(total, 'event') + ' in the next 7 days';
+    $('#pWeek').innerHTML = padHtml;
+    $('#weekSub').textContent = $('#pWeekSub').textContent = plural(total, 'event') + ' in the next 7 days';
   }
 
   /* ---------- Weather (sample numbers) ---------- */
@@ -638,7 +957,6 @@ button.meal:active{background:var(--card-2)}
     if (kind === 'sun') return open + sun(12, 12, 4.2, 2, 2.6) + '</svg>';
     if (kind === 'cloud') return open + '<path d="' + CLOUD + '" stroke="var(--cloud)"/></svg>';
     if (kind === 'rain') return open + '<path d="' + CLOUD + '" transform="translate(0 -3)" stroke="var(--cloud)"/><path d="M8.2 19.2l-1.1 2.3M12.2 19.2l-1.1 2.3M16.2 19.2l-1.1 2.3" stroke="var(--rob)"/></svg>';
-    // partly cloudy
     return open + sun(8.2, 8.2, 3, 1.4, 1.8) +
       '<path d="' + CLOUD + '" transform="translate(4.2 4.3) scale(.82)" stroke="var(--cloud)" fill="var(--card)" stroke-width="' + (sw / .82).toFixed(2) + '"/></svg>';
   }
@@ -653,16 +971,15 @@ button.meal:active{background:var(--card-2)}
       { hi: 61, lo: 40, icon: 'sun', pop: 0 },
     ],
   };
+  const wxDayName = i => i === 0 ? 'Today' : fmt(addDays(TODAY, i), { weekday: 'short' });
 
   function renderWeather() {
     const lo = Math.min.apply(null, WX.days.map(d => d.lo)), hi = Math.max.apply(null, WX.days.map(d => d.hi));
     const pct = v => ((v - lo) / (hi - lo) * 100).toFixed(1);
     const rows = WX.days.map((d, i) => {
-      const date = addDays(TODAY, i);
-      const name = i === 0 ? 'Today' : fmt(date, { weekday: 'short' });
       const now = i === 0 ? '<i style="left:' + pct(WX.temp) + '%"></i>' : '';
       return '<div class="wx-row">' +
-        '<span class="wx-day">' + name + '</span>' +
+        '<span class="wx-day">' + wxDayName(i) + '</span>' +
         '<span class="wx-ic">' + wxIcon(d.icon, 2) + (d.pop ? '<small>' + d.pop + '%</small>' : '') + '</span>' +
         '<span class="wx-lo">' + d.lo + '°</span>' +
         '<span class="range"><span style="left:' + pct(d.lo) + '%;width:' + (pct(d.hi) - pct(d.lo)).toFixed(1) + '%"></span>' + now + '</span>' +
@@ -682,7 +999,56 @@ button.meal:active{background:var(--card-2)}
         '<div><small>Humidity</small><b>' + WX.humidity + '</b></div>' +
       '</div>' + rows +
       '<p class="wx-foot">Sample forecast · Updated ' + NOW.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + '</p>';
+
+    $('#pWx').innerHTML =
+      '<div class="wx-loc">' + ICON.pin + 'Corinth, TX</div>' +
+      '<div class="rw-now"><div class="rw-ic">' + wxIcon(WX.icon, 1.6) + '</div>' +
+        '<div class="rw-temp">' + WX.temp + '°</div>' +
+        '<div class="rw-cond"><b>' + WX.cond + '</b><span>H ' + WX.days[0].hi + '° · L ' + WX.days[0].lo + '°</span></div></div>' +
+      '<div class="rw-days">' + WX.days.map((d, i) =>
+        '<div><b>' + wxDayName(i) + '</b>' + wxIcon(d.icon, 2) + '<span>' + d.hi + '°</span><small>' + d.lo + '°</small></div>').join('') +
+      '</div>';
   }
+
+  /* ---------- iPad rail: clock, today, dinner ---------- */
+  function renderClock() {
+    const d = new Date();
+    if (keyOf(d) !== keyOf(TODAY)) { location.reload(); return; } // new day on an always-on display
+    let h = d.getHours(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    $('#pTime').innerHTML = h + ':' + pad(d.getMinutes()) + '<span>' + ap + '</span>';
+  }
+  function renderRailToday() {
+    const evs = eventsOn(TODAY), m = minutesNow();
+    const isPast = e => !e.allDay && toMin(e.start) + 60 <= m;
+    const left = evs.filter(e => !isPast(e)).length;
+    let html = evs.length
+      ? evs.map(e => eventHTML(e, isPast(e) ? 'is-past' : '')).join('')
+      : '<p class="r-empty">Nothing on the calendar today.</p>';
+    if (!left) {
+      const tm = eventsOn(addDays(TODAY, 1));
+      html += '<p class="r-sub">Tomorrow</p>' + (tm.length ? tm.map(e => eventHTML(e)).join('') : '<p class="r-empty">Nothing planned.</p>');
+    }
+    $('#pToday').innerHTML = html;
+    const badge = $('#pTodayCount');
+    badge.hidden = !evs.length;
+    badge.textContent = left ? left + ' to go' : 'All done';
+  }
+  function renderDinner() {
+    const m = meals[TODAY.getDay()];
+    $('#pDinner').innerHTML = '<span class="rd-ic">' + ICON.dinner + '</span>' +
+      '<span class="rd-body"><small>Tonight’s dinner</small><b' + (m ? '' : ' class="unset"') + '>' + (m ? esc(m) : 'Not planned yet') + '</b></span>' +
+      '<span class="un-go">' + ICON.right + '</span>';
+  }
+  $('#pDate').textContent = fmt(TODAY, { weekday: 'long', month: 'long', day: 'numeric' });
+  $('#pDinner').onclick = () => setTab('meals');
+
+  /* ---------- iPad tabs ---------- */
+  function setTab(name) {
+    $$('#pTabs [role="tab"]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    $$('.pad .panel').forEach(p => { p.hidden = p.dataset.panel !== name; });
+    if (name === 'calendar') renderPadCalendar();
+  }
+  $('#pTabs').addEventListener('click', e => { const b = e.target.closest('[role="tab"]'); if (b) setTab(b.dataset.tab); });
 
   /* ---------- Shopping list ---------- */
   let shop = [
@@ -698,38 +1064,40 @@ button.meal:active{background:var(--card-2)}
   ].map(i => Object.assign({ id: nextId() }, i));
   let justAdded = null;
 
-  $('#shopAdd').innerHTML = ICON.plus;
+  $$('.add-btn').forEach(b => { b.innerHTML = ICON.plus; });
   function renderShop() {
-    const done = shop.filter(i => i.done).length;
-    $('#shopList').innerHTML = shop.length
+    const done = shop.filter(i => i.done).length, left = shop.length - done;
+    const html = shop.length
       ? shop.map(it =>
           '<button type="button" class="item' + (it.done ? ' done' : '') + (it.id === justAdded ? ' pop' : '') + '" data-id="' + it.id + '" aria-pressed="' + it.done + '">' +
             '<span class="check">' + ICON.check + '</span>' +
             '<span class="item-text"><span class="item-name">' + esc(it.name) + '</span>' + (it.note ? '<span class="item-note">' + esc(it.note) + '</span>' : '') + '</span>' +
           '</button>').join('')
-      : '<p class="empty" style="border-top:1px solid var(--line)">All set. Nothing on the list.</p>';
+      : '<p class="empty list-empty">All set. Nothing on the list.</p>';
+    $('#shopList').innerHTML = $('#pShopList').innerHTML = html;
     justAdded = null;
     $('#shopStatus').textContent = shop.length ? done + ' of ' + shop.length + ' checked' : '';
-    $('#clearChecked').disabled = !done;
-    const left = shop.length - done;
+    $('#clearChecked').disabled = $('#pClearChecked').disabled = !done;
     $('#shopSub').textContent = left ? plural(left, 'item') + ' to get' : 'All done';
+    $('#pShopSub').textContent = (left ? plural(left, 'item') + ' to get' : 'All done') + (done ? ' · ' + done + ' checked' : '');
+    const badge = $('#pShopBadge'); badge.textContent = left; badge.hidden = !left;
   }
-  $('#shopForm').addEventListener('submit', e => {
+  $$('#shopForm, #pShopForm').forEach(form => form.addEventListener('submit', e => {
     e.preventDefault();
-    const inp = $('#shopInput'), name = inp.value.trim();
+    const inp = form.querySelector('input'), name = inp.value.trim();
     if (!name) { inp.focus(); return; }
     const it = { id: nextId(), name: name.charAt(0).toUpperCase() + name.slice(1), done: false };
     shop.unshift(it); justAdded = it.id;
     inp.value = '';
     renderShop();
-  });
-  $('#shopList').addEventListener('click', e => {
+  }));
+  $$('#shopList, #pShopList').forEach(list => list.addEventListener('click', e => {
     const b = e.target.closest('.item'); if (!b) return;
     const it = shop.find(i => i.id === +b.dataset.id); if (!it) return;
     it.done = !it.done;
     renderShop();
-  });
-  $('#clearChecked').onclick = () => {
+  }));
+  $('#clearChecked').onclick = $('#pClearChecked').onclick = () => {
     const before = shop.slice(), n = shop.filter(i => i.done).length;
     shop = shop.filter(i => !i.done);
     renderShop();
@@ -751,9 +1119,9 @@ button.meal:active{background:var(--card-2)}
 
   function renderMeals() {
     const end = addDays(weekStart, 6);
-    $('#mealSub').textContent = 'Week of ' + fmt(weekStart, { month: 'short', day: 'numeric' }) + ' – ' +
+    $('#mealSub').textContent = $('#pMealSub').textContent = 'Week of ' + fmt(weekStart, { month: 'short', day: 'numeric' }) + ' – ' +
       fmt(end, end.getMonth() === weekStart.getMonth() ? { day: 'numeric' } : { month: 'short', day: 'numeric' });
-    $('#mealList').innerHTML = meals.map((m, i) => {
+    $('#mealList').innerHTML = $('#pMealList').innerHTML = meals.map((m, i) => {
       const d = addDays(weekStart, i), isToday = sameDay(d, TODAY);
       const dayCol = '<span class="meal-day"><b>' + fmt(d, { weekday: 'short' }) + '</b><span>' + d.getDate() + '</span></span>';
       if (editing === i) {
@@ -765,29 +1133,31 @@ button.meal:active{background:var(--card-2)}
         '<span class="meal-name' + (m ? '' : ' empty') + '">' + (isToday && m ? '<span class="tonight">Tonight</span><br>' : '') + (m ? esc(m) : 'Tap to plan') + '</span>' +
         '<span class="meal-pen">' + ICON.pencil + '</span></button>';
     }).join('');
-    $('#clearWeek').disabled = meals.every(m => !m);
+    $('#clearWeek').disabled = $('#pClearWeek').disabled = meals.every(m => !m);
+    renderDinner();
     if (editing !== null) {
-      const inp = $('#mealList .editing input');
-      inp.focus({ preventScroll: true });
-      const len = inp.value.length; inp.setSelectionRange(len, len);
+      const inp = visible('.editing input');
+      if (inp) { inp.focus({ preventScroll: true }); const len = inp.value.length; inp.setSelectionRange(len, len); }
     }
   }
   function commitEdit() {
     if (editing === null) return;
-    const inp = $('#mealList .editing input');
+    const inp = visible('.editing input');
     if (inp) meals[editing] = inp.value.trim();
     editing = null;
   }
-  $('#mealList').addEventListener('click', e => {
-    if (e.target.closest('[data-act="cancel"]')) { editing = null; renderMeals(); return; }
-    const row = e.target.closest('button.meal'); if (!row) return;
-    commitEdit();
-    editing = +row.dataset.i;
-    renderMeals();
+  $$('#mealList, #pMealList').forEach(list => {
+    list.addEventListener('click', e => {
+      if (e.target.closest('[data-act="cancel"]')) { editing = null; renderMeals(); return; }
+      const row = e.target.closest('button.meal'); if (!row) return;
+      commitEdit();
+      editing = +row.dataset.i;
+      renderMeals();
+    });
+    list.addEventListener('submit', e => { e.preventDefault(); commitEdit(); renderMeals(); });
+    list.addEventListener('keydown', e => { if (e.key === 'Escape' && editing !== null) { editing = null; renderMeals(); } });
   });
-  $('#mealList').addEventListener('submit', e => { e.preventDefault(); commitEdit(); renderMeals(); });
-  $('#mealList').addEventListener('keydown', e => { if (e.key === 'Escape' && editing !== null) { editing = null; renderMeals(); } });
-  $('#clearWeek').onclick = () => {
+  $('#clearWeek').onclick = $('#pClearWeek').onclick = () => {
     const before = meals.slice();
     editing = null;
     meals = meals.map(() => '');
@@ -818,7 +1188,7 @@ button.meal:active{background:var(--card-2)}
   }
 
   function renderNotes() {
-    $('#noteList').innerHTML = notes.length
+    const html = notes.length
       ? notes.map(n =>
           '<div class="note' + (n.done ? ' done' : '') + (n.id === noteAdded ? ' pop' : '') + '" data-id="' + n.id + '">' +
             '<button type="button" class="note-check" data-act="toggle" aria-pressed="' + n.done + '" aria-label="' + (n.done ? 'Mark as not done' : 'Mark as done') + '"><span class="check">' + ICON.check + '</span></button>' +
@@ -826,27 +1196,29 @@ button.meal:active{background:var(--card-2)}
               '<p class="note-meta"><i style="background:' + PEOPLE[n.by].color + '"></i>' + PEOPLE[n.by].name + ' · ' + ago(n.at) + '</p></div>' +
             '<button type="button" class="note-del" data-act="del" aria-label="Delete note">' + ICON.trash + '</button>' +
           '</div>').join('')
-      : '<p class="empty" style="border-top:1px solid var(--line)">No notes yet.</p>';
+      : '<p class="empty list-empty">No notes yet.</p>';
+    $('#noteList').innerHTML = $('#pNoteList').innerHTML = html;
     noteAdded = null;
     const open = notes.filter(n => !n.done).length;
-    $('#noteSub').textContent = notes.length ? plural(open, 'open note') : '';
+    $('#noteSub').textContent = $('#pNoteSub').textContent = notes.length ? plural(open, 'open note') : '';
+    const badge = $('#pNoteBadge'); badge.textContent = open; badge.hidden = !open;
   }
-  $('#authorSeg').addEventListener('click', e => {
+  $$('.seg').forEach(seg => seg.addEventListener('click', e => {
     const b = e.target.closest('.seg-btn'); if (!b) return;
     author = b.dataset.by;
-    document.querySelectorAll('#authorSeg .seg-btn').forEach(x => x.setAttribute('aria-checked', String(x === b)));
-  });
-  $('#noteForm').addEventListener('submit', e => {
+    $$('.seg .seg-btn').forEach(x => x.setAttribute('aria-checked', String(x.dataset.by === author)));
+  }));
+  $$('#noteForm, #pNoteForm').forEach(form => form.addEventListener('submit', e => {
     e.preventDefault();
-    const inp = $('#noteInput'), text = inp.value.trim();
+    const inp = form.querySelector('textarea'), text = inp.value.trim();
     if (!text) { inp.focus(); return; }
     const n = { id: nextId(), by: author, at: Date.now(), done: false, text };
     notes.unshift(n); noteAdded = n.id;
     inp.value = '';
     inp.blur();
     renderNotes();
-  });
-  $('#noteList').addEventListener('click', e => {
+  }));
+  $$('#noteList, #pNoteList').forEach(list => list.addEventListener('click', e => {
     const btn = e.target.closest('[data-act]'); if (!btn) return;
     const id = +btn.closest('.note').dataset.id, idx = notes.findIndex(n => n.id === id);
     if (idx < 0) return;
@@ -856,8 +1228,7 @@ button.meal:active{background:var(--card-2)}
       renderNotes();
       toast('Note deleted', () => { notes.splice(idx, 0, removed); renderNotes(); });
     }
-  });
-  setInterval(renderNotes, MIN);
+  }));
 
   /* ---------- Toast with undo ---------- */
   let toastTimer = null, undoFn = null;
@@ -873,9 +1244,9 @@ button.meal:active{background:var(--card-2)}
   }
   $('#toastUndo').onclick = () => { if (undoFn) undoFn(); clearTimeout(toastTimer); hideToast(); };
 
-  /* ---------- Sticky shortcut bar + scroll spy ---------- */
+  /* ---------- Phone: sticky shortcut bar + scroll spy ---------- */
   const jump = $('#jump'), track = $('#jumpTrack'), header = $('.top');
-  const sections = Array.prototype.slice.call(document.querySelectorAll('main .section'));
+  const sections = $$('main .section');
   let active = 'calendar', spyLock = false, lockTimer = null;
 
   function setActive(id) {
@@ -920,13 +1291,20 @@ button.meal:active{background:var(--card-2)}
 
   /* ---------- Go ---------- */
   renderHeader();
-  renderCalendar();
-  renderWeek();
   renderWeather();
+  renderWeek();
   renderShop();
   renderMeals();
   renderNotes();
+  renderClock();
+  renderRailToday();
+  renderCalendar();
   spy();
+
+  let resizeTimer = null;
+  window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderPadCalendar, 120); });
+  setInterval(renderClock, 10000);
+  setInterval(() => { renderRailToday(); renderNotes(); }, MIN);
 })();
 </script>
 </body>
