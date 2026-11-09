@@ -16,7 +16,9 @@ const AGENDA_MAX = 4;         // events shown in the Today card before "+N more"
 const desk = () => window.matchMedia('(min-width: 1024px) and (min-height: 600px)').matches;
 
 let view = null;              // 'month' | 'week' | 'day'
+let appliedDefault = null;    // the "Opens in" setting last applied
 let sel = today();            // selected day
+let todayKey = keyOf(sel);    // to notice midnight on an always-on display
 let root = null;
 let lastRange = null;         // keeps the time-grid scroll position when only data changes
 let resizeTimer = null;
@@ -25,7 +27,9 @@ let gridHH = HOUR_WEEK;
 
 function mount(el) {
   root = el;
-  if (!view) view = getPrefs().defaultView || 'month';
+  // Use the "Opens in" setting on first open, and again whenever it's changed in Settings.
+  const preferred = getPrefs().defaultView || 'day';
+  if (!view || preferred !== appliedDefault) { view = preferred; appliedDefault = preferred; }
   wasPhone = isPhone();
   el.innerHTML =
     '<div class="cal-page">' +
@@ -81,6 +85,12 @@ function onResize() {
 
 function refresh() {
   if (!root) return;
+  // After midnight, if the old "today" was selected, follow the calendar to the new day.
+  const k = keyOf(today());
+  if (k !== todayKey) {
+    if (keyOf(sel) === todayKey) sel = today();
+    todayKey = k;
+  }
   renderToolbar();
   renderBody();
   renderLegend();

@@ -27,7 +27,9 @@ function emptyData() {
 }
 
 /* ---------- Private family link ---------- */
-const prefs = Object.assign({ weekStart: 0, defaultView: 'month', sample: true }, readJSON(PREFS_KEY));
+const prefs = Object.assign({ weekStart: 0, defaultView: 'day', sample: true }, readJSON(PREFS_KEY));
+// v2: the calendar now opens in Day view. Devices set up earlier saved "month" without anyone choosing it.
+if (!prefs.v || prefs.v < 2) { prefs.defaultView = 'day'; prefs.v = 2; writeJSON(PREFS_KEY, prefs); }
 let familyKey = null;
 (function readFamilyKey() {
   const fromUrl = new URLSearchParams(location.search).get('family');
