@@ -1,0 +1,13 @@
+// Cloud Firestore security rules for the family dashboard.
+// Paste into Firebase console → Firestore Database → Rules, with FAMILY_KEY replaced by the
+// private key from your family link (the part after ?family=). The real key never goes in this repo.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Only the family's own space can be read or written. Everything else is denied.
+    match /families/{familyId}/{collection}/{docId} {
+      allow read, write: if familyId == 'FAMILY_KEY'
+        && collection in ['events', 'shopping', 'notes', 'meals', 'members'];
+    }
+  }
+}

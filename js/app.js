@@ -1,7 +1,7 @@
 // App shell: sidebar, header (date · weather · time), phone bottom bar, and page routing.
 import { icon } from './icons.js';
 import { $, $$, esc, openModal, openPopover } from './ui.js';
-import { getData, subscribe, isSample } from './store.js';
+import { getData, subscribe, mode, getSyncStatus } from './store.js';
 import { startWeather, onWeather, getWeather, describe, LOCATION } from './weather.js';
 import { fmt, keyOf, today, parseKey } from './dates.js';
 import calendar from './pages/calendar.js';
@@ -39,7 +39,7 @@ function renderShell() {
     '<nav class="nav" aria-label="Main">' + MAIN_NAV.map(navItem).join('') + '</nav>' +
     '<hr class="nav-sep">' +
     '<nav class="nav" aria-label="Family and settings">' + MORE_NAV.map(navItem).join('') + '</nav>' +
-    '<a class="sample-pill" id="samplePill" href="#/settings" hidden>' + icon('info', 16) + 'Showing sample data</a>';
+    '<a class="sample-pill" id="samplePill" href="#/settings" hidden></a>';
 
   $('#bottomnav').innerHTML = MAIN_NAV.map(n =>
     '<a class="bn-item" href="#/' + n.id + '" data-page="' + n.id + '">' + icon(n.icon, 22) + '<span>' + n.label + '</span>' +
@@ -63,7 +63,44 @@ function renderBadges() {
     const c = n.count(d);
     $$('[data-count="' + n.id + '"]').forEach(el => { el.textContent = c; el.hidden = !c; });
   });
-  $('#samplePill').hidden = !isSample();
+  renderStatusPill();
+}
+
+// Small note at the bottom of the sidebar: sample data, device-only, or a sync problem.
+// Nothing shows when family sync is working normally.
+function renderStatusPill() {
+  const pill = $('#samplePill'), m = mode(), st = getSyncStatus().state;
+  let text = '', ic = 'info', warn = false;
+  if (m === 'sample') text = 'Showing sample data';
+  else if (m === 'local') text = 'Saved on this device only';
+  else if (st === 'offline') { text = 'Offline · changes will sync'; ic = 'wifi-off'; }
+  else if (st === 'error') { text = 'Can’t reach family data'; ic = 'wifi-off'; warn = true; }
+  pill.hidden = !text;
+  pill.classList.toggle('warn', warn);
+  if (text) pill.innerHTML = icon(ic, 16) + '<span>' + text + '</span>';
+}
+
+// Re-render without losing what someone is typing (a change from another device can arrive mid-edit).
+function refreshKeepingInput() {
+  const a = document.activeElement;
+  let keep = null;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA') && $('#page').contains(a)) {
+    const owner = a.closest('[data-key], [data-member], form[id]');
+    if (owner) {
+      keep = {
+        sel: owner.dataset.key ? '[data-key="' + owner.dataset.key + '"]' : owner.dataset.member ? '[data-member="' + owner.dataset.member + '"]' : '#' + owner.id,
+        name: a.getAttribute('name'), tag: a.tagName.toLowerCase(), value: a.value, start: a.selectionStart, end: a.selectionEnd, el: a,
+      };
+    }
+  }
+  if (currentPage) currentPage.refresh();
+  if (!keep) return;
+  const owner = $('#page ' + keep.sel);
+  const el = owner && (owner.matches(keep.tag) ? owner : $(keep.name ? keep.tag + '[name="' + keep.name + '"]' : keep.tag, owner));
+  if (!el || el === keep.el) return;
+  el.value = keep.value;
+  el.focus({ preventScroll: true });
+  try { el.setSelectionRange(keep.start, keep.end); } catch (e) { /* not a text field */ }
 }
 
 function setActiveNav() {
@@ -157,7 +194,7 @@ renderWeather();
 renderBadges();
 route();
 window.addEventListener('hashchange', route);
-subscribe(() => { if (currentPage) currentPage.refresh(); renderBadges(); });
+subscribe(() => { refreshKeepingInput(); renderBadges(); });
 onWeather(() => { renderWeather(); if (currentId === 'settings') currentPage.refresh(); });
 $('#hdrWx').addEventListener('click', e => openForecast(e.currentTarget));
 setInterval(renderClock, 5000);

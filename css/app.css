@@ -87,6 +87,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -.01em; line-height: 1.2; }
   margin-top: auto; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--r-btn);
   background: var(--surface); border: 1px dashed var(--border-strong); font-size: 13px; font-weight: 500; color: var(--text-muted);
 }
+.sample-pill.warn { border-style: solid; border-color: #E7C2BD; background: var(--danger-soft); color: var(--danger); }
 
 .main {
   min-width: 0; display: flex; flex-direction: column; gap: 16px;
@@ -405,6 +406,9 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 .set-title + .set-row { border-top: 0; }
 .set-row b { font-size: 15px; font-weight: 600; }
 .set-row p { font-size: 13px; color: var(--text-muted); margin-top: 2px; max-width: 520px; }
+.status-pill.ok { background: var(--sage-soft); border-color: #CAD8C3; color: #4E6447; }
+.status-pill.warn { background: var(--danger-soft); border-color: #E7C2BD; color: var(--danger); }
+.set-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--surface-soft); border: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
 
 /* ---------- Modal ---------- */
