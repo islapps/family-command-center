@@ -208,7 +208,21 @@ input[type="date"].input, input[type="time"].input { display: flex; align-items:
 .mv { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .mv-dow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--border); background: #FCFAF7; }
 .mv-dow span { text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--text-muted); padding: 6px 0; }
-.mv-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.mv-grid { position: relative; flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.span-bar {
+  position: absolute; z-index: 2; height: 22px; display: flex; align-items: center; gap: 5px; padding: 0 8px; overflow: hidden;
+  background: var(--soft); border-radius: 0; font-size: 12px; font-weight: 600; line-height: 22px; white-space: nowrap; text-align: left;
+  transition: filter .15s;
+}
+.span-bar:hover { filter: brightness(.97); }
+.span-bar.s-start { border-radius: 7px 0 0 7px; }
+.span-bar.s-end { border-radius: 0 7px 7px 0; }
+.span-bar.s-start.s-end { border-radius: 7px; }
+.span-bar:not(.s-start) { box-shadow: inset 3px 0 0 var(--dot); }
+.span-bar i { width: 6px; height: 6px; border-radius: 50%; flex: none; display: block; }
+.span-bar i + i { margin-left: -8px; box-shadow: 0 0 0 1.5px var(--soft); }
+.span-bar span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.span-bar em { margin-left: auto; padding-left: 8px; font-style: normal; font-weight: 500; color: #5F5952; flex: none; }
 .mv-cell {
   position: relative; min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 3px;
   padding: 4px 4px 3px 5px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -261,6 +275,11 @@ input[type="date"].input, input[type="time"].input { display: flex; align-items:
 .tv-dayview .tv-dh { align-items: flex-start; padding: 10px 14px; }
 .tv-dayview .tv-dh span { font-size: 15px; letter-spacing: 0; color: var(--text); font-weight: 600; }
 .tv-dayview .tv-dh.today span { color: var(--accent-ink); }
+.tv-adwrap {
+  grid-column: 2 / -1; position: relative; min-width: 0;
+  background-image: linear-gradient(to right, var(--border) 1px, transparent 1px); background-size: calc(100% / var(--cols)) 100%;
+}
+.tv-dayview .span-bar { font-size: 13px; }
 .tv-allday .tv-adcell { border-left: 1px solid var(--border); padding: 4px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .tv-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .tv-grid { position: relative; display: grid; grid-template-columns: 56px repeat(var(--cols), minmax(0, 1fr)); height: calc(24 * var(--hh)); }
@@ -436,6 +455,12 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .field > span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
 .field > span em { font-style: normal; font-weight: 400; }
+.allday-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.allday-row > span { font-size: 15px; font-weight: 600; }
+.dt { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 8px; }
+.dt.date-only { grid-template-columns: minmax(0, 1fr); }
+.dt.date-only input[type="time"] { display: none; }
+.span-hint span { font-weight: 600; color: var(--accent-ink); }
 .field-error { color: var(--danger); font-size: 13px; font-weight: 500; margin-top: -8px; }
 .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
 .who { display: flex; flex-wrap: wrap; gap: 8px; }

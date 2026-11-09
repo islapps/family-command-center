@@ -39,7 +39,14 @@ export function dotsHTML(data, ev) {
   return ev.who.slice(0, 2).map(id => '<i style="background:' + colorOf(data, id).dot + '"></i>').join('');
 }
 
-export function occursOn(ev, d) {
+// How many days one occurrence covers (1 for a normal event).
+export function spanDays(ev) {
+  if (!ev.endDate || ev.endDate <= ev.date) return 1;
+  return daysBetween(parseKey(ev.date), parseKey(ev.endDate)) + 1;
+}
+
+// Does an occurrence of this event START on day d? (Repeat rules apply to start dates.)
+export function startsOn(ev, d) {
   const start = parseKey(ev.date);
   const diff = daysBetween(start, d);
   if (diff < 0) return false;
@@ -55,14 +62,52 @@ export function occursOn(ev, d) {
   }
 }
 
+// The occurrence covering day d, if any: { start, index (0 = first day), span }.
+export function occurrenceOn(ev, d) {
+  const span = spanDays(ev);
+  for (let i = 0; i < span; i++) {
+    const s = new Date(d.getFullYear(), d.getMonth(), d.getDate() - i);
+    if (startsOn(ev, s)) return { start: s, index: i, span };
+  }
+  return null;
+}
+
+// Shown at the top of a day: all-day events, and multi-day events on any day but a timed first day.
+export const isTopOfDay = e => e.allDay || (e.span > 1 && e.dayIndex > 0);
+
 export function byTime(a, b) {
-  if (a.allDay !== b.allDay) return a.allDay ? -1 : 1;
-  if (a.allDay) return a.title.localeCompare(b.title);
+  const ta = isTopOfDay(a), tb = isTopOfDay(b);
+  if (ta !== tb) return ta ? -1 : 1;
+  if (ta) {
+    // Multi-day first (earliest start, then longest) so they line up across days; then by title.
+    if ((a.span > 1) !== (b.span > 1)) return a.span > 1 ? -1 : 1;
+    return (a.occ || '').localeCompare(b.occ || '') || (b.span - a.span) || a.title.localeCompare(b.title);
+  }
   return a.start.localeCompare(b.start) || a.title.localeCompare(b.title);
 }
 
-// Occurrences on day d; each carries `on` (its date key) so edits know which day was tapped.
+// Occurrences covering day d. Each carries:
+//   on       - the day's key (which day was tapped)
+//   occ      - the key of the occurrence's first day (for "delete only this one")
+//   dayIndex - 0 on the first day; span - number of days
 export function eventsOn(data, d) {
   const k = keyOf(d);
-  return data.events.filter(e => occursOn(e, d)).map(e => Object.assign({}, e, { on: k })).sort(byTime);
+  const out = [];
+  data.events.forEach(e => {
+    const o = occurrenceOn(e, d);
+    if (o) out.push(Object.assign({}, e, { on: k, occ: keyOf(o.start), dayIndex: o.index, span: o.span }));
+  });
+  return out.sort(byTime);
 }
+
+// What to show as the "time" of an occurrence on its day.
+export function whenLabel(e, timeLabel) {
+  if (e.allDay) return 'All day';
+  if (e.span > 1) {
+    if (e.dayIndex === 0) return timeLabel(e.start);
+    if (e.dayIndex === e.span - 1) return 'Until ' + timeLabel(e.end);
+    return 'All day';
+  }
+  return timeLabel(e.start);
+}
+export const dayOfLabel = e => e.span > 1 ? 'Day ' + (e.dayIndex + 1) + ' of ' + e.span : '';
