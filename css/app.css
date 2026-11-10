@@ -430,6 +430,47 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 .set-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--surface-soft); border: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
 
+/* ---------- To-dos ---------- */
+.notice { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px; color: var(--accent-ink); background: var(--sand-soft); border-color: #E3D2BC; box-shadow: none; }
+.notice svg { color: var(--accent); margin-top: 1px; }
+.todo-add { padding: 14px; margin-bottom: 16px; }
+.add-line { display: flex; gap: 10px; }
+.todo-opts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; margin-top: 10px; }
+.todo-opts .opt { display: flex; align-items: center; gap: 8px; }
+.todo-opts .opt > span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.todo-opts .opt input[type="date"] { width: 170px; }
+.todo-opts .opt select { width: 150px; }
+.todo-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.todo-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.todo-sec { padding: 14px 16px 6px; }
+.todo-sec[hidden] { display: none; }
+.sec-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding-bottom: 6px; }
+.sec-top h2 { font-size: 18px; }
+.sec-top p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.sec-count { flex: none; padding: 4px 10px; border-radius: 999px; background: var(--surface-soft); border: 1px solid var(--border); font-size: 12px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+.sec-count.all { background: var(--sage-soft); border-color: #CAD8C3; color: #4E6447; }
+.todo-list { display: flex; flex-direction: column; }
+.todo-item { display: flex; align-items: flex-start; border-top: 1px solid var(--border); }
+.todo-check { width: 44px; height: 48px; flex: none; display: grid; place-items: center; margin-left: -8px; }
+.todo-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 12px 0 10px; text-align: left; border-radius: 8px; }
+.todo-body:hover .todo-text { text-decoration: underline; text-decoration-color: var(--border-strong); }
+.todo-text { font-size: 16px; font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
+.todo-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0 6px; font-size: 13px; color: var(--text-muted); }
+.todo-meta i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+.todo-meta .sep { color: var(--border-strong); }
+.todo-meta .late { font-weight: 600; color: #A15C3E; }
+.todo-item.done .todo-text { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); }
+.todo-empty { font-size: 14px; color: var(--text-muted); padding: 4px 0 12px; }
+@media (max-width: 860px) {
+  .todo-cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .todo-opts .opt input[type="date"], .todo-opts .opt select { width: auto; flex: 1; }
+  .todo-opts .opt { flex: 1 1 140px; }
+  .todo-opts .seg { width: 100%; }
+  .todo-opts .seg button { flex: 1; padding: 0 8px; }
+}
+
 /* ---------- Modal ---------- */
 .modal-wrap {
   position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px;

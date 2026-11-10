@@ -11,7 +11,7 @@ const CLOUD_KEY = 'fcc.cloud.v1';    // last copy of family data, for an instant
 const PREFS_KEY = 'fcc.prefs.v1';
 const FAMILY_KEY = 'fcc.family.v1';  // the private family key
 const KEY_RE = /^[A-Za-z0-9]{20,64}$/;
-const COLLS = ['events', 'shopping', 'notes', 'meals', 'members'];
+const COLLS = ['events', 'shopping', 'notes', 'meals', 'members', 'todos'];
 
 const listeners = new Set();
 
@@ -23,7 +23,7 @@ function writeJSON(key, value) {
 }
 function readText(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
 function emptyData() {
-  return { events: [], shopping: [], notes: [], meals: {}, family: DEFAULT_FAMILY.map(m => Object.assign({}, m)) };
+  return { events: [], shopping: [], notes: [], meals: {}, todos: [], family: DEFAULT_FAMILY.map(m => Object.assign({}, m)) };
 }
 
 /* ---------- Private family link ---------- */
@@ -90,13 +90,15 @@ let syncStarted = false;
 let queued = [];          // changes made before the sync module finished loading
 let status = { state: 'connecting' };
 const meta = {};          // per collection: { fromCache, sig }
+const blocked = {};       // collections the database rules don't allow yet (e.g. to-dos before the rules update)
 let seededMembers = false;
 
 export const getSyncStatus = () => status;
+export const todosBlocked = () => mode() === 'cloud' && !!blocked.todos;
 function updateStatus(next) {
   if (next) status = next;
   else if (status.state !== 'error') {
-    const allLive = COLLS.every(c => meta[c] && meta[c].fromCache === false);
+    const allLive = COLLS.every(c => blocked[c] || (meta[c] && meta[c].fromCache === false));
     status = { state: allLive ? 'live' : navigator.onLine === false ? 'offline' : 'connecting' };
   }
 }
@@ -112,7 +114,7 @@ function serialize(d) {
   Object.keys(d.meals).forEach(k => { meals[k] = JSON.stringify({ name: d.meals[k] }); });
   const members = {};
   d.family.forEach((m, i) => { const c = Object.assign({}, m, { order: i }); delete c.id; members[m.id] = JSON.stringify(c); });
-  return { events: byId(d.events), shopping: byId(d.shopping), notes: byId(d.notes), meals, members };
+  return { events: byId(d.events), shopping: byId(d.shopping), notes: byId(d.notes), meals, members, todos: byId(d.todos || []) };
 }
 function diff(before, after) {
   const changes = [];
@@ -130,8 +132,12 @@ function send(changes) {
 function saveCloudCache() { writeJSON(CLOUD_KEY, { key: familyKey, data: cloudData }); }
 
 function onCollection(name, docs, m) {
+  // A retry got through (e.g. the rules were just updated): clear that refusal.
+  let recovered = false;
+  if (!m.fromCache && blocked[name]) { delete blocked[name]; recovered = true; }
+  if (!m.fromCache && status.state === 'error' && status.coll === name) { status = { state: 'connecting' }; recovered = true; }
   const sig = JSON.stringify(docs);
-  const changed = !meta[name] || meta[name].sig !== sig;
+  const changed = recovered || !meta[name] || meta[name].sig !== sig;
   meta[name] = { fromCache: m.fromCache, sig };
   if (changed) {
     if (name === 'meals') {
@@ -144,7 +150,9 @@ function onCollection(name, docs, m) {
           .map(d => { const c = Object.assign({}, d); delete c.order; return c; });
       }
     } else {
-      const sorted = name === 'events' ? docs : docs.sort((a, b) => (b.at || 0) - (a.at || 0)); // newest first
+      const sorted = name === 'events' ? docs
+        : name === 'todos' ? docs.sort((a, b) => (a.at || 0) - (b.at || 0))   // in the order they were added
+        : docs.sort((a, b) => (b.at || 0) - (a.at || 0));                     // newest first
       cloudData[name] = sorted;
     }
     saveCloudCache();
@@ -160,6 +168,13 @@ function onCollection(name, docs, m) {
   if (changed || prev !== status.state) emit();
 }
 
+// A refusal for one new kind of data (to-dos before the rules update) shouldn't flag the whole app.
+function onStatus(s) {
+  if (s.coll === 'todos' && s.code === 'permission-denied') { blocked.todos = true; updateStatus(); emit(); return; }
+  updateStatus(s);
+  emit();
+}
+
 async function startCloud() {
   if (syncStarted || !familyKey) return;
   syncStarted = true;
@@ -167,7 +182,7 @@ async function startCloud() {
   window.addEventListener('offline', () => { updateStatus(); emit(); });
   try {
     const mod = await import('./sync.js');
-    await mod.connect(familyKey, { onCollection, onStatus: s => { updateStatus(s); emit(); } });
+    await mod.connect(familyKey, { onCollection, onStatus });
     sync = mod;
     if (queued.length) { const q = queued; queued = []; sync.write(q); }
   } catch (e) {

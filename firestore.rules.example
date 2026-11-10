@@ -7,7 +7,7 @@ service cloud.firestore {
     // Only the family's own space can be read or written. Everything else is denied.
     match /families/{familyId}/{collection}/{docId} {
       allow read, write: if familyId == 'FAMILY_KEY'
-        && collection in ['events', 'shopping', 'notes', 'meals', 'members'];
+        && collection in ['events', 'shopping', 'notes', 'meals', 'members', 'todos'];
     }
   }
 }

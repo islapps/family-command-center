@@ -20,7 +20,8 @@ js/events.js             member colors, repeat rules, events on a given day
 js/editor.js             add / edit / delete events
 js/weather.js            live Corinth, TX weather from Open-Meteo
 js/sample.js             sample data for presentation mode
-js/pages/*.js            Calendar, Meals, Shopping, Notes, Family, Settings
+js/todos.js              to-do rules: sections, weekly / monthly / quarterly resets
+js/pages/*.js            Calendar, To-dos, Meals, Shopping, Notes, Family, Settings
 js/icons.js              Lucide icons (ISC license), inlined
 firestore.rules.example  security rules template (the real key is never committed)
 ```
@@ -29,7 +30,7 @@ firestore.rules.example  security rules template (the real key is never committe
 
 - **Sample data**: the public page, or "Show sample data" in Settings. In memory only; never touches real data.
 - **Family data**: opening the private family link (`?family=KEY`) connects a device to Firestore at
-  `families/KEY/{events,shopping,notes,meals,members}`. Changes sync live between devices, and each device keeps
+  `families/KEY/{events,shopping,notes,meals,members,todos}`. Changes sync live between devices, and each device keeps
   an offline copy. The key stays in the address so "Add to Home Screen" keeps it.
 - **Device only**: sample data off and no family link; saved in this browser.
 - **Security**: the Firestore rules (set in the Firebase console, not in this repo) only allow the family key's

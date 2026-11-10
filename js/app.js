@@ -1,19 +1,22 @@
 // App shell: sidebar, header (date · weather · time), phone bottom bar, and page routing.
 import { icon } from './icons.js';
 import { $, $$, esc, openModal, openPopover } from './ui.js';
-import { getData, subscribe, mode, getSyncStatus } from './store.js';
+import { getData, getPrefs, subscribe, mode, getSyncStatus } from './store.js';
+import { openCount } from './todos.js';
 import { startWeather, onWeather, getWeather, describe, LOCATION } from './weather.js';
 import { fmt, keyOf, today, parseKey } from './dates.js';
 import calendar from './pages/calendar.js';
+import todos from './pages/todos.js';
 import meals from './pages/meals.js';
 import shopping from './pages/shopping.js';
 import notes from './pages/notes.js';
 import family from './pages/family.js';
 import settings from './pages/settings.js';
 
-const PAGES = { calendar, meals, shopping, notes, family, settings };
+const PAGES = { calendar, todos, meals, shopping, notes, family, settings };
 const MAIN_NAV = [
   { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { id: 'todos', label: 'To-dos', icon: 'list-checks', count: d => openCount(d.todos || [], getPrefs().weekStart) },
   { id: 'meals', label: 'Meals', icon: 'utensils' },
   { id: 'shopping', label: 'Shopping', icon: 'shopping-cart', count: d => d.shopping.filter(i => !i.done).length },
   { id: 'notes', label: 'Notes', icon: 'notebook-pen', count: d => d.notes.filter(n => !n.done).length },
@@ -22,6 +25,9 @@ const MORE_NAV = [
   { id: 'family', label: 'Family', icon: 'users' },
   { id: 'settings', label: 'Settings', icon: 'settings' },
 ];
+// Phones have room for four tabs plus More; Meals moves into More there.
+const PHONE_TABS = ['calendar', 'todos', 'shopping', 'notes'];
+const PHONE_MORE = MAIN_NAV.filter(n => PHONE_TABS.indexOf(n.id) === -1).concat(MORE_NAV);
 
 let currentId = null;
 let currentPage = null;
@@ -41,7 +47,7 @@ function renderShell() {
     '<nav class="nav" aria-label="Family and settings">' + MORE_NAV.map(navItem).join('') + '</nav>' +
     '<a class="sample-pill" id="samplePill" href="#/settings" hidden></a>';
 
-  $('#bottomnav').innerHTML = MAIN_NAV.map(n =>
+  $('#bottomnav').innerHTML = MAIN_NAV.filter(n => PHONE_TABS.indexOf(n.id) !== -1).map(n =>
     '<a class="bn-item" href="#/' + n.id + '" data-page="' + n.id + '">' + icon(n.icon, 22) + '<span>' + n.label + '</span>' +
       (n.count ? '<em class="badge" data-count="' + n.id + '" hidden></em>' : '') + '</a>').join('') +
     '<button class="bn-item" id="moreBtn" type="button" data-page="more">' + icon('menu', 22) + '<span>More</span></button>';
@@ -51,7 +57,7 @@ function renderShell() {
       label: 'More',
       cls: 'modal-sm',
       html: '<div class="modal-head"><h2>More</h2><button class="icon-btn ghost" data-close aria-label="Close">' + icon('x') + '</button></div>' +
-        '<div class="modal-body more-list">' + MORE_NAV.map(n =>
+        '<div class="modal-body more-list">' + PHONE_MORE.map(n =>
           '<a class="nav-item" href="#/' + n.id + '" data-close>' + icon(n.icon, 20) + '<span>' + n.label + '</span></a>').join('') + '</div>',
     });
   });
@@ -105,7 +111,7 @@ function refreshKeepingInput() {
 
 function setActiveNav() {
   $$('[data-page]').forEach(a => {
-    const on = a.dataset.page === currentId || (a.dataset.page === 'more' && (currentId === 'family' || currentId === 'settings'));
+    const on = a.dataset.page === currentId || (a.dataset.page === 'more' && PHONE_MORE.some(n => n.id === currentId));
     a.classList.toggle('active', on);
     if (a.tagName === 'A') { if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
   });
@@ -132,7 +138,7 @@ function renderClock() {
   $('#hdrTime').setAttribute('datetime', d.toISOString());
   // A new day on an always-on display: refresh everything that depends on "today".
   const k = keyOf(today());
-  if (k !== lastDay) { lastDay = k; renderDate(); if (currentPage) currentPage.refresh(); }
+  if (k !== lastDay) { lastDay = k; renderDate(); renderBadges(); if (currentPage) currentPage.refresh(); }
   else if (currentId === 'calendar' && currentPage) currentPage.refresh(); // moves the "now" line, dims past events
 }
 function renderWeather() {
