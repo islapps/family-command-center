@@ -440,6 +440,13 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 .todo-opts .opt > span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
 .todo-opts .opt input[type="date"] { width: 170px; }
 .todo-opts .opt select { width: 150px; }
+.when-opts { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; }
+.when-opts .opt[hidden] { display: none; }
+.todo-opts .when-opts select[name="dueMonth"] { width: 200px; }
+.todo-opts .when-opts select[name="dueDay"] { width: 140px; }
+.when-opts.stacked { flex-direction: column; align-items: stretch; gap: 14px; }
+.when-opts.stacked .opt { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.when-opts.stacked .opt > span { font-size: 13px; font-weight: 600; color: var(--text-muted); }
 .todo-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
 .todo-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .todo-sec { padding: 14px 16px 6px; }
@@ -459,6 +466,7 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 .todo-meta i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
 .todo-meta .sep { color: var(--border-strong); }
 .todo-meta .late { font-weight: 600; color: #A15C3E; }
+.todo-meta .due { font-weight: 600; color: var(--accent-ink); }
 .todo-item.done .todo-text { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); }
 .todo-empty { font-size: 14px; color: var(--text-muted); padding: 4px 0 12px; }
 @media (max-width: 860px) {
@@ -467,6 +475,8 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 @media (max-width: 767px) {
   .todo-opts .opt input[type="date"], .todo-opts .opt select { width: auto; flex: 1; }
   .todo-opts .opt { flex: 1 1 140px; }
+  .todo-opts .when-opts { flex: 1 1 100%; }
+  .todo-opts .when-opts select[name="dueMonth"], .todo-opts .when-opts select[name="dueDay"] { width: auto; }
   .todo-opts .seg { width: 100%; }
   .todo-opts .seg button { flex: 1; padding: 0 8px; }
 }

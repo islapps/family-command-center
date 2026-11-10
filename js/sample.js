@@ -77,20 +77,23 @@ export function buildSample() {
   dinners.forEach((m, i) => { meals[keyOf(addDays(sunday, i))] = m; });
 
   // To-dos: a few for today (one carried over from yesterday), one ahead, and some repeating chores.
-  const todo = (o, i) => Object.assign({ id: id('td'), who: 'family', repeat: 'none', date: K(0), done: false, doneFor: '', at: NOW - (40 - i) * 60000 }, o);
+  const todo = (o, i) => Object.assign({ id: id('td'), who: 'family', repeat: 'none', date: K(0), dueDay: '', dueMonth: '', done: false, doneFor: '', doneOn: '', at: NOW - (40 - i) * 60000 }, o);
   const weekKey = 'W' + keyOf(addDays(T, -T.getDay()));
+  const monthKey = 'M' + T.getFullYear() + '-' + String(T.getMonth() + 1).padStart(2, '0');
+  const quarterKey = 'Q' + T.getFullYear() + '-' + (Math.floor(T.getMonth() / 3) + 1);
   const todos = [
     { text: "Schedule Knox's photos", who: 'hannah', date: K(-1) },
     { text: 'Return library books', who: 'kai' },
     { text: 'Call about the water bill', who: 'rob' },
     { text: 'Pick up dry cleaning', who: 'rob', done: true },
     { text: 'Buy the Thanksgiving turkey', who: 'hannah', date: K(9) },
-    { text: 'Take out trash & recycling', who: 'rob', repeat: 'weekly', doneFor: weekKey },
-    { text: 'Laundry & fold', who: 'hannah', repeat: 'weekly' },
+    { text: 'Take out trash & recycling', who: 'rob', repeat: 'weekly', dueDay: String(T.getDay()) },   // due today
+    { text: 'Laundry & fold', who: 'hannah', repeat: 'weekly', doneFor: weekKey },
     { text: 'Water the plants', who: 'kai', repeat: 'weekly' },
-    { text: 'Pay the credit card', who: 'rob', repeat: 'monthly' },
+    { text: 'Pay the mortgage', who: 'rob', repeat: 'monthly', dueDay: '1', doneFor: monthKey },
+    { text: 'Pay the credit card', who: 'rob', repeat: 'monthly', dueDay: '20' },
     { text: 'Clean out the fridge', repeat: 'monthly' },
-    { text: 'Change the air filter', who: 'rob', repeat: 'quarterly' },
+    { text: 'Change the air filter', who: 'rob', repeat: 'quarterly', dueMonth: '0', dueDay: '1', doneFor: quarterKey },
     { text: 'Test smoke detectors', repeat: 'quarterly' },
   ].map(todo);
 

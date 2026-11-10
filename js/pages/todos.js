@@ -1,13 +1,15 @@
-// To-dos: one-offs for a day, plus weekly / monthly / quarterly ones that come back each period.
+// To-dos: one-offs for a day, plus weekly / monthly / quarterly ones that come back each period,
+// optionally on a set day ("Tuesdays", "On the 1st").
 import { icon } from '../icons.js';
 import { $, $$, esc, openModal, toast } from '../ui.js';
 import { getData, getPrefs, mutate, snapshot, restore, uid, isSample, todosBlocked } from '../store.js';
 import { member, colorOf } from '../events.js';
-import { today, keyOf, parseKey, addDays, fmt, relDay } from '../dates.js';
-import { TODO_REPEATS, sections, isDone, periodKey, resetLabel } from '../todos.js';
+import { today, keyOf, parseKey, addDays, startOfWeek, fmt, relDay } from '../dates.js';
+import { TODO_REPEATS, QUARTER_MONTHS, ordinal, sections, isDone, periodKey, resetLabel, scheduleLabel, dueStatus } from '../todos.js';
 
 let root = null;
-let form = { repeat: 'none', who: 'family' };   // the add form remembers its choices while the app is open
+// The add form remembers its choices while the app is open.
+let form = { repeat: 'none', who: 'family', date: '', dueDay: '', dueMonth: '' };
 let justAdded = null;
 
 const SECTION_COPY = {
@@ -23,6 +25,50 @@ function whoOptions(selected) {
 function repeatSeg(selected, attr) {
   return '<div class="seg" role="radiogroup" aria-label="How often">' + TODO_REPEATS.map(r =>
     '<button type="button" role="radio" ' + attr + '="' + r.id + '" aria-checked="' + (r.id === selected) + '">' + r.label + '</button>').join('') + '</div>';
+}
+const opt = (value, label, selected) => '<option value="' + value + '"' + (String(selected) === String(value) ? ' selected' : '') + '>' + label + '</option>';
+function dayOfMonthOptions(selected, anyLabel) {
+  let h = anyLabel ? opt('', anyLabel, selected) : '';
+  for (let i = 1; i <= 28; i++) h += opt(String(i), ordinal(i), selected);
+  return h + opt('last', 'Last day', selected);
+}
+
+// The "when" controls change with how often: a day for Once, a weekday for Weekly, and so on.
+function whenControls(repeat, v) {
+  if (repeat === 'none') {
+    return '<label class="opt"><span>Day</span><input class="input" type="date" name="todoDate" value="' + v.date + '" aria-label="Day"></label>';
+  }
+  if (repeat === 'weekly') {
+    const ws = getPrefs().weekStart, sun = startOfWeek(today(), 0);
+    let h = opt('', 'Any day', v.dueDay);
+    for (let i = 0; i < 7; i++) {
+      const wd = (ws + i) % 7;
+      h += opt(String(wd), fmt(addDays(sun, wd), { weekday: 'long' }), v.dueDay);
+    }
+    return '<label class="opt"><span>On</span><select class="input" name="dueDay" aria-label="On">' + h + '</select></label>';
+  }
+  if (repeat === 'monthly') {
+    return '<label class="opt"><span>On</span><select class="input" name="dueDay" aria-label="On">' + dayOfMonthOptions(v.dueDay, 'Any day') + '</select></label>';
+  }
+  return '<label class="opt"><span>In</span><select class="input" name="dueMonth" aria-label="Month of the quarter">' +
+      opt('', 'Any time', v.dueMonth) + QUARTER_MONTHS.map((months, i) => opt(String(i), months, v.dueMonth)).join('') +
+    '</select></label>' +
+    '<label class="opt" data-qday' + (v.dueMonth === '' ? ' hidden' : '') + '><span>On</span><select class="input" name="dueDay" aria-label="Day">' +
+      dayOfMonthOptions(v.dueDay || '1') + '</select></label>';
+}
+// Reads the "when" controls back into to-do fields.
+function readWhen(scope, repeat) {
+  const val = name => { const el = scope.querySelector('[name="' + name + '"]'); return el ? el.value : ''; };
+  if (repeat === 'none') return { date: val('todoDate') || val('date'), dueDay: '', dueMonth: '' };
+  if (repeat === 'quarterly') { const m = val('dueMonth'); return { dueMonth: m, dueDay: m === '' ? '' : (val('dueDay') || '1') }; }
+  return { dueDay: val('dueDay'), dueMonth: '' };
+}
+function bindQuarterDay(scope) {
+  scope.addEventListener('change', e => {
+    if (e.target.name !== 'dueMonth') return;
+    const day = $('[data-qday]', scope);
+    if (day) day.hidden = e.target.value === '';
+  });
 }
 
 function mount(el) {
@@ -40,8 +86,7 @@ function mount(el) {
         '</div>' +
         '<div class="todo-opts">' +
           repeatSeg(form.repeat, 'data-repeat') +
-          '<label class="opt" id="dateOpt"' + (form.repeat === 'none' ? '' : ' hidden') + '><span>Day</span>' +
-            '<input class="input" type="date" name="todoDate" value="' + form.date + '" aria-label="Day"></label>' +
+          '<div class="when-opts" id="whenOpts">' + whenControls(form.repeat, form) + '</div>' +
           '<label class="opt"><span>For</span><select class="input" name="todoWho" aria-label="For">' + whoOptions(form.who) + '</select></label>' +
         '</div>' +
       '</form>' +
@@ -52,26 +97,36 @@ function mount(el) {
     '</div>';
 
   const f = $('#todoForm', el);
+  bindQuarterDay(f);
   f.addEventListener('submit', e => {
     e.preventDefault();
     const input = f.elements.todoText, text = input.value.trim();
     if (!text) { input.focus(); return; }
     const T = keyOf(today());
+    const when = readWhen(f, form.repeat);
     form.who = f.elements.todoWho.value;
-    form.date = f.elements.todoDate.value && f.elements.todoDate.value >= T ? f.elements.todoDate.value : T;
-    const t = { id: uid(), text, who: form.who, repeat: form.repeat, date: form.repeat === 'none' ? form.date : T, done: false, doneFor: '', at: Date.now() };
+    Object.assign(form, when);
+    if (form.repeat === 'none') form.date = when.date && when.date >= T ? when.date : T;
+    const t = {
+      id: uid(), text, who: form.who, repeat: form.repeat, date: form.repeat === 'none' ? form.date : T,
+      dueDay: form.repeat === 'none' ? '' : when.dueDay, dueMonth: form.repeat === 'quarterly' ? when.dueMonth : '',
+      done: false, doneFor: '', doneOn: '', at: Date.now(),
+    };
     justAdded = t.id;
     input.value = '';
     mutate(d => { d.todos.push(t); });
-    if (t.repeat !== 'none') toast('Added to ' + SECTION_COPY[t.repeat].title.toLowerCase());
-    else if (t.date !== T) toast('Added for ' + (relDay(parseKey(t.date)) || fmt(parseKey(t.date), { weekday: 'short', month: 'short', day: 'numeric' })));
+    if (t.repeat !== 'none') {
+      const sched = scheduleLabel(t, getPrefs().weekStart);
+      toast('Added to ' + SECTION_COPY[t.repeat].title.toLowerCase() + (sched ? ' · ' + sched : ''));
+    } else if (t.date !== T) toast('Added for ' + (relDay(parseKey(t.date)) || fmt(parseKey(t.date), { weekday: 'short', month: 'short', day: 'numeric' })));
   });
   f.addEventListener('click', e => {
     const b = e.target.closest('[data-repeat]');
-    if (!b) return;
+    if (!b || b.dataset.repeat === form.repeat) return;
     form.repeat = b.dataset.repeat;
+    form.dueDay = ''; form.dueMonth = '';
     $$('[data-repeat]', f).forEach(x => x.setAttribute('aria-checked', String(x === b)));
-    $('#dateOpt', f).hidden = form.repeat !== 'none';
+    $('#whenOpts', f).innerHTML = whenControls(form.repeat, form);
   });
   el.addEventListener('click', e => {
     const b = e.target.closest('[data-act]');
@@ -90,29 +145,38 @@ function mount(el) {
 }
 
 function toggle(id) {
-  const ws = getPrefs().weekStart;
+  const ws = getPrefs().weekStart, T = today();
   mutate(d => {
     const t = d.todos.find(x => x.id === id);
     if (!t) return;
-    if (t.repeat === 'none') t.done = !t.done;
-    else t.doneFor = isDone(t, ws) ? '' : periodKey(t.repeat, today(), ws);
+    const nowDone = !isDone(t, ws, T);
+    if (t.repeat === 'none') t.done = nowDone;
+    else t.doneFor = nowDone ? periodKey(t.repeat, T, ws) : '';
+    t.doneOn = nowDone ? keyOf(T) : '';
   });
 }
 
 function itemHTML(t, ws, kind) {
-  const data = getData(), done = isDone(t, ws);
+  const data = getData(), done = isDone(t, ws), T = today();
   const meta = [];
   if (t.who && t.who !== 'family') {
     const m = member(data, t.who);
     meta.push('<i style="background:' + colorOf(data, m.id).dot + '"></i>' + esc(m.name));
   }
-  if (kind === 'today' && t.date < keyOf(today())) {
+  if (t.repeat === 'none') {
     const d = parseKey(t.date);
-    meta.push('<b class="late">From ' + (relDay(d) || fmt(d, { weekday: 'short', month: 'short', day: 'numeric' })) + '</b>');
-  }
-  if (kind === 'upcoming') {
-    const d = parseKey(t.date);
-    meta.push(relDay(d) || fmt(d, { weekday: 'short', month: 'short', day: 'numeric' }));
+    if (kind === 'today' && t.date < keyOf(T)) meta.push('<b class="late">From ' + (relDay(d) || fmt(d, { weekday: 'short', month: 'short', day: 'numeric' })) + '</b>');
+    if (kind === 'upcoming') meta.push(relDay(d) || fmt(d, { weekday: 'short', month: 'short', day: 'numeric' }));
+  } else {
+    // Under "This week" etc. a short label is enough ("Tuesdays"); in Today, say how often too.
+    const sched = scheduleLabel(t, ws, T);
+    if (kind === 'today') {
+      if (t.repeat === 'weekly') meta.push('Every ' + sched.replace(/s$/, ''));
+      else if (t.repeat === 'monthly') meta.push('Monthly · ' + sched.replace(/^On /, ''));
+      else meta.push('Quarterly · ' + sched);
+    } else if (sched) meta.push(sched);
+    const st = dueStatus(t, ws, T);
+    if (st) meta.push('<b class="' + st.cls + '">' + st.text + '</b>');
   }
   return '<div class="todo-item' + (done ? ' done' : '') + (t.id === justAdded ? ' pop' : '') + '" data-id="' + esc(t.id) + '">' +
     '<button class="todo-check" data-act="toggle" role="checkbox" aria-checked="' + done + '" aria-label="' + esc(t.text) + '"><span class="cbox lg">' + icon('check', 18) + '</span></button>' +
@@ -156,6 +220,7 @@ function openTodoEditor(id) {
   const t = getData().todos.find(x => x.id === id);
   if (!t) return;
   let repeat = t.repeat;
+  const values = { date: t.date || keyOf(today()), dueDay: t.dueDay || '', dueMonth: t.dueMonth || '' };
   openModal({
     label: 'Edit to-do',
     cls: 'modal-sm',
@@ -165,7 +230,7 @@ function openTodoEditor(id) {
         '<div class="modal-body">' +
           '<label class="field"><span>To-do</span><input class="input" name="text" maxlength="120" value="' + esc(t.text) + '"></label>' +
           '<div class="field"><span>How often</span>' + repeatSeg(t.repeat, 'data-erepeat') + '</div>' +
-          '<label class="field" id="eDate"' + (t.repeat === 'none' ? '' : ' hidden') + '><span>Day</span><input class="input" type="date" name="date" value="' + t.date + '"></label>' +
+          '<div class="when-opts stacked" id="eWhen">' + whenControls(t.repeat, values).replace('name="todoDate"', 'name="date"') + '</div>' +
           '<label class="field"><span>For</span><select class="input" name="who">' + whoOptions(t.who || 'family') + '</select></label>' +
         '</div>' +
         '<div class="modal-foot">' +
@@ -175,12 +240,14 @@ function openTodoEditor(id) {
       '</form>',
     mount(modal, close) {
       const ef = $('form', modal);
+      bindQuarterDay(ef);
       ef.addEventListener('click', e => {
         const b = e.target.closest('[data-erepeat]');
         if (b) {
+          if (b.dataset.erepeat === repeat) return;
           repeat = b.dataset.erepeat;
           $$('[data-erepeat]', ef).forEach(x => x.setAttribute('aria-checked', String(x === b)));
-          $('#eDate', ef).hidden = repeat !== 'none';
+          $('#eWhen', ef).innerHTML = whenControls(repeat, { date: values.date, dueDay: '', dueMonth: '' }).replace('name="todoDate"', 'name="date"');
           return;
         }
         if (e.target.closest('[data-del]')) {
@@ -194,14 +261,17 @@ function openTodoEditor(id) {
         e.preventDefault();
         const text = ef.elements.text.value.trim();
         if (!text) { ef.elements.text.focus(); return; }
+        const when = readWhen(ef, repeat);
         mutate(d => {
           const x = d.todos.find(y => y.id === id);
           if (!x) return;
-          if (x.repeat !== repeat) { x.done = false; x.doneFor = ''; }
+          if (x.repeat !== repeat) { x.done = false; x.doneFor = ''; x.doneOn = ''; }
           x.text = text;
           x.repeat = repeat;
           x.who = ef.elements.who.value;
-          x.date = repeat === 'none' ? (ef.elements.date.value || keyOf(today())) : (x.date || keyOf(today()));
+          x.date = repeat === 'none' ? (when.date || keyOf(today())) : (x.date || keyOf(today()));
+          x.dueDay = repeat === 'none' ? '' : when.dueDay;
+          x.dueMonth = repeat === 'quarterly' ? when.dueMonth : '';
         });
         close();
         toast('To-do updated');
