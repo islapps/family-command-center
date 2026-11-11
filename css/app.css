@@ -744,3 +744,8 @@ h1,h2,h3,.hdr-date b,.hdr-time,.cal-title,.brand b{letter-spacing:-.022em}
   .tb-nav .datepick{display:none}
   .cal-title{font-size:15px}
 }
+/* Phones, Day view: a shorter hourly grid that hands scrolling back to the page at the end of the day */
+@media (max-width:767px){
+  .cal-body[data-view="day"] .tv{height:clamp(300px,46vh,460px)}
+  .tv-scroll{overscroll-behavior:auto}
+}
