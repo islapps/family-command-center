@@ -678,3 +678,54 @@ button.meal-row:hover .meal-pen { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* =====================================================================
+   Soft finish: rounder shapes, floating menu, capsule controls.
+   Same colors and layout; overrides the shapes defined above.
+   ===================================================================== */
+:root{ --r-card:22px; --r-btn:14px; --r-input:14px;
+  --shadow:0 1px 2px rgba(41,39,34,.04),0 10px 28px rgba(41,39,34,.07);
+  --shadow-lg:0 2px 6px rgba(41,39,34,.06),0 28px 70px rgba(41,39,34,.20); }
+h1,h2,h3,.hdr-date b,.hdr-time,.cal-title,.brand b{letter-spacing:-.022em}
+.card{border-color:rgba(41,39,34,.05)}
+/* floating sidebar */
+@media (min-width:768px){
+  .shell{grid-template-columns:calc(var(--sidebar-w) + 12px) minmax(0,1fr)}
+  .sidebar{margin:12px 0 12px 12px;top:12px;height:calc(100vh - 24px);height:calc(100dvh - 24px);border:0;border-radius:28px;
+    box-shadow:0 1px 2px rgba(41,39,34,.04),0 10px 28px rgba(41,39,34,.06);padding-top:20px}
+}
+.nav-item{border-radius:16px}
+.nav-item.active{background:var(--surface);box-shadow:0 1px 2px rgba(41,39,34,.06),0 4px 12px rgba(41,39,34,.07)}
+.badge{border-radius:999px}
+.sample-pill{border-radius:16px}
+/* capsules and segmented pills */
+.btn{border-radius:999px;padding:0 18px}
+.icon-btn{border-radius:50%}
+.seg{border-radius:999px;padding:4px;border-color:transparent;background:#EFE9E1}
+.seg button{border-radius:999px}
+.seg button[aria-selected="true"],.seg button[aria-checked="true"]{box-shadow:0 1px 3px rgba(41,39,34,.18)}
+.cal-title{border-radius:999px}
+.input{border-radius:14px}
+.cbox{border-radius:8px}.cbox.lg{border-radius:10px}
+.chip,.more{border-radius:9px}
+.span-bar.s-start{border-radius:9px 0 0 9px}.span-bar.s-end{border-radius:0 9px 9px 0}.span-bar.s-start.s-end{border-radius:9px}
+.tv-ev{border-radius:10px}
+.shop-item{border-radius:18px;border-color:rgba(41,39,34,.07)}
+.ud-ic,.rd-ic{border-radius:14px}
+.who-btn,.status-pill,.sec-count{border-radius:999px}
+.modal{border-radius:30px}.popover{border-radius:22px}.mp-m{border-radius:14px}
+.toast{border-radius:999px;padding-left:22px}
+.hdr-wx{border-radius:18px;border:0;background:rgba(255,255,255,.55)}
+/* floating tab bar on phones */
+@media (max-width:767px){
+  .bottomnav{left:12px;right:12px;bottom:calc(var(--safe-b) + 10px);border:0;border-radius:30px;padding:6px;
+    background:rgba(243,238,231,.94);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+    box-shadow:0 2px 6px rgba(41,39,34,.08),0 14px 34px rgba(41,39,34,.16)}
+  .bn-item{border-radius:24px}
+  .bn-item.active{background:var(--surface);box-shadow:0 1px 3px rgba(41,39,34,.10)}
+  .modal{border-radius:30px 30px 0 0}
+}
+@media (max-width:767px){
+  .main{padding-bottom:calc(var(--safe-b) + 108px)}
+  .toast{bottom:calc(var(--safe-b) + 96px)}
+}
