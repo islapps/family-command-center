@@ -729,3 +729,18 @@ h1,h2,h3,.hdr-date b,.hdr-time,.cal-title,.brand b{letter-spacing:-.022em}
   .main{padding-bottom:calc(var(--safe-b) + 108px)}
   .toast{bottom:calc(var(--safe-b) + 96px)}
 }
+
+/* Phones: a + button at the top of the calendar replaces the wide Add Event button below it */
+.add-top{display:none}
+@media (max-width:767px){
+  .add-top{display:grid;background:var(--accent);border-color:var(--accent);color:#fff;margin-left:auto}
+  .add-top:hover{border-color:var(--accent)}
+  .add-top svg{stroke-width:2.6}
+  .cal-foot .btn-primary{display:none}
+  .tb-nav .icon-btn{width:42px;height:42px}
+  .cal-title{font-size:16px;padding:0 2px 0 4px;gap:3px}
+}
+@media (max-width:359px){
+  .tb-nav .datepick{display:none}
+  .cal-title{font-size:15px}
+}

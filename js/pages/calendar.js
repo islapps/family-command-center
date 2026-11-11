@@ -42,6 +42,7 @@ function mount(el) {
             '<button class="icon-btn" data-nav="1" aria-label="Next">' + icon('chevron-right') + '</button>' +
             '<span class="icon-btn datepick">' + icon('calendar') + '<input type="date" id="calDate" aria-label="Go to a date"></span>' +
             '<button class="cal-title" id="calTitle" aria-haspopup="dialog" aria-expanded="false"><span></span>' + icon('chevron-down', 18) + '</button>' +
+            '<button class="icon-btn add-top" id="addEventTop" aria-label="Add event">' + icon('plus', 22) + '</button>' +
           '</div>' +
           '<div class="tb-right">' +
             '<button class="btn btn-quiet today-btn" id="calToday" hidden>Today</button>' +
@@ -106,11 +107,11 @@ function renderToolbar() {
   const title = $('#calTitle span', root), T = today();
   const thisYear = d => d.getFullYear() === T.getFullYear();
   const ws = startOfWeek(sel, getPrefs().weekStart);
-  if (view === 'month') title.textContent = fmt(sel, { month: 'long', year: 'numeric' });
+  if (view === 'month') title.textContent = fmt(sel, { month: window.innerWidth < 360 ? 'short' : 'long', year: 'numeric' });
   else if (view === 'week') {
     const label = weekRangeLabel(ws);
     title.textContent = thisYear(ws) && thisYear(addDays(ws, 6)) ? label.replace(/, \d{4}$/, '') : label;
-  } else title.textContent = fmt(sel, thisYear(sel) ? { weekday: 'long', month: 'short', day: 'numeric' } : { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  } else title.textContent = fmt(sel, thisYear(sel) ? { weekday: isPhone() ? 'short' : 'long', month: 'short', day: 'numeric' } : { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
   $$('.seg [data-view]', root).forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === view)));
   const showsToday = view === 'month' ? sel.getFullYear() === T.getFullYear() && sel.getMonth() === T.getMonth()
     : view === 'week' ? sameDay(ws, startOfWeek(T, getPrefs().weekStart)) : sameDay(sel, T);
@@ -497,7 +498,7 @@ function bind() {
       mutate(d => { const it = d.shopping.find(x => x.id === id); if (it) it.done = !it.done; });
       return;
     }
-    if (t.closest('#addEvent')) { openEventEditor({ date: sel }); return; }
+    if (t.closest('#addEvent, #addEventTop')) { openEventEditor({ date: sel }); return; }
     if (t.closest('#uDinner')) { location.hash = '#/meals'; return; }
     const col = t.closest('.tv-col');
     if (col && (t === col || t.classList.contains('tv-now'))) {
